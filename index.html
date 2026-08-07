@@ -45,22 +45,33 @@
             border: 1px solid #b8d8ff;
         }
         .jump-panel h3 { margin-bottom: 14px; }
-        /* 可搜索下拉组合框 */
+        .jump-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: flex-start;
+        }
+        /* 可搜索下拉组合框（章节、页数各一个） */
         .combo-wrap {
             position: relative;
-            max-width: 480px;
+            width: 220px;
         }
-        #searchInput {
+        .combo-wrap input {
             width: 100%;
-            padding: 12px 14px;
+            padding: 10px 14px;
             font-size: 1rem;
             border: 1px solid #99c8ff;
             border-radius: 8px;
             outline: none;
+            background: #fff;
         }
-        #searchInput:focus {
+        .combo-wrap input:focus {
             border-color: #1677ff;
             box-shadow: 0 0 0 2px rgba(22,119,255,0.15);
+        }
+        .combo-wrap input:disabled {
+            background: #f5f5f5;
+            cursor: not-allowed;
         }
         .combo-dropdown {
             position: absolute;
@@ -71,7 +82,7 @@
             border: 1px solid #d0e3ff;
             border-radius: 8px;
             box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-            max-height: 300px;
+            max-height: 280px;
             overflow-y: auto;
             z-index: 10;
             display: none;
@@ -86,10 +97,6 @@
         .combo-option:hover, .combo-option.active {
             background-color: #e6f4ff;
         }
-        .combo-option .opt-title {
-            font-weight: 700;
-            color: #1677ff;
-        }
         .combo-option .opt-meta {
             font-size: 0.85rem;
             color: #666;
@@ -103,6 +110,16 @@
             color: #999;
             font-size: 0.9rem;
         }
+        .btn-go {
+            padding: 10px 22px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            background: #1677ff;
+            color: white;
+        }
+        .btn-go:disabled { opacity: 0.5; cursor: not-allowed; }
         .search-hint {
             margin-top: 8px;
             font-size: 0.85rem;
@@ -147,6 +164,11 @@
             color: #999;
             padding: 20px 0;
         }
+        /* 手机端下拉框占满整行 */
+        @media (max-width: 560px) {
+            .combo-wrap { width: 100%; }
+            .btn-go { width: 100%; }
+        }
     </style>
 </head>
 <body>
@@ -154,22 +176,29 @@
         <h1>📖 王陆807｜雅思听写练习｜章节导航</h1>
 
         <div class="summary-block">
-            <p><strong>使用说明：</strong>在搜索框输入章节号或页数（如 "7"、"41"、"chapter7"）即可筛选，回车或点击结果跳转练习页面；也可以直接点击下方章节卡片进入。</p>
+            <p><strong>使用说明：</strong>先选章节、再选页数（两个框都支持输入搜索），点击"开始听写"跳转练习页面；也可以直接点击下方章节卡片进入。</p>
             <p>每个章节页面支持：乱序听写、真人美音、错题记录、Excel导出。</p>
         </div>
 
         <div class="jump-panel">
-            <h3>🚀 搜索跳转</h3>
-            <div class="combo-wrap">
-                <input type="text" id="searchInput" placeholder="输入章节号 / 页数搜索，如：7、41、chapter7..." autocomplete="off">
-                <div class="combo-dropdown" id="comboDropdown"></div>
+            <h3>🚀 快速跳转</h3>
+            <div class="jump-row">
+                <div class="combo-wrap">
+                    <input type="text" id="chapterInput" placeholder="选择/搜索章节..." autocomplete="off">
+                    <div class="combo-dropdown" id="chapterDropdown"></div>
+                </div>
+                <div class="combo-wrap">
+                    <input type="text" id="pagesInput" placeholder="选择/搜索页数..." autocomplete="off" disabled>
+                    <div class="combo-dropdown" id="pagesDropdown"></div>
+                </div>
+                <button class="btn-go" id="btnGo" disabled>开始听写 →</button>
             </div>
-            <div class="search-hint">↑↓ 选择，回车跳转；输入内容同时会过滤下方章节卡片</div>
+            <div class="search-hint">支持键盘 ↑↓ 选择、回车确认；先选章节后页数框才可用</div>
         </div>
 
         <h3 class="chapter-list-title">📚 全部章节</h3>
         <div class="chapter-grid" id="chapterGrid"></div>
-        <div class="empty-tip" id="emptyTip" style="display:none;">暂无匹配章节。</div>
+        <div class="empty-tip" id="emptyTip" style="display:none;">暂无章节，请先生成章节页面并在 index.html 的 chapterList 数组中登记。</div>
     </div>
 
 <script>
@@ -181,133 +210,181 @@ const chapterList = [
     {chapter: 7, pages: "43-44", file: "chapter7(43-44).html", count: 55},
 ];
 
-// ================= 工具函数 =================
-const searchInput = document.querySelector('#searchInput');
-const comboDropdown = document.querySelector('#comboDropdown');
+// ================= 通用可搜索下拉组件 =================
+// 用同一套逻辑驱动“章节”和“页数”两个组合框，互不混合
+function createCombo(inputEl, dropdownEl, {getOptions, renderLabel, onSelect}){
+    let matches = [];
+    let activeIndex = -1;
+    let selected = null; // 当前已确认选中的项
+
+    function highlight(text, kw){
+        if(!kw) return text;
+        const idx = text.toLowerCase().indexOf(kw.toLowerCase());
+        if(idx === -1) return text;
+        return text.slice(0,idx) + '<mark>' + text.slice(idx, idx+kw.length) + '</mark>' + text.slice(idx+kw.length);
+    }
+
+    function open(keyword){
+        const kw = (keyword || '').trim().toLowerCase();
+        const all = getOptions();
+        matches = kw ? all.filter(o => renderLabel(o).toLowerCase().includes(kw)) : all;
+        activeIndex = matches.length > 0 ? 0 : -1;
+        dropdownEl.innerHTML = '';
+        if(matches.length === 0){
+            dropdownEl.innerHTML = '<div class="combo-empty">没有匹配项</div>';
+        }else{
+            matches.forEach((item, idx)=>{
+                const div = document.createElement('div');
+                div.className = 'combo-option' + (idx === activeIndex ? ' active' : '');
+                div.innerHTML = highlight(renderLabel(item), keyword ? keyword.trim() : '');
+                // mousedown 先于 blur 触发，保证点击可选中
+                div.addEventListener('mousedown', e=>{
+                    e.preventDefault();
+                    choose(item);
+                });
+                dropdownEl.appendChild(div);
+            });
+        }
+        dropdownEl.classList.add('open');
+    }
+
+    function close(){
+        dropdownEl.classList.remove('open');
+        activeIndex = -1;
+    }
+
+    function refreshActive(){
+        const opts = dropdownEl.querySelectorAll('.combo-option');
+        opts.forEach((el, idx)=>{
+            el.classList.toggle('active', idx === activeIndex);
+            if(idx === activeIndex) el.scrollIntoView({block:'nearest'});
+        });
+    }
+
+    function choose(item){
+        selected = item;
+        inputEl.value = renderLabel(item);
+        close();
+        onSelect(item);
+    }
+
+    inputEl.addEventListener('focus', ()=>{ inputEl.select(); open(''); });
+    inputEl.addEventListener('input', ()=>{
+        selected = null;
+        onSelect(null); // 输入变化即视为未确认，下游联动重置
+        open(inputEl.value);
+    });
+    inputEl.addEventListener('blur', ()=>{ setTimeout(close, 120); });
+    inputEl.addEventListener('keydown', e=>{
+        if(!dropdownEl.classList.contains('open')) return;
+        if(e.key === 'ArrowDown'){
+            e.preventDefault();
+            if(matches.length > 0){ activeIndex = (activeIndex + 1) % matches.length; refreshActive(); }
+        }else if(e.key === 'ArrowUp'){
+            e.preventDefault();
+            if(matches.length > 0){ activeIndex = (activeIndex - 1 + matches.length) % matches.length; refreshActive(); }
+        }else if(e.key === 'Enter'){
+            e.preventDefault();
+            if(activeIndex >= 0 && matches[activeIndex]) choose(matches[activeIndex]);
+        }else if(e.key === 'Escape'){
+            close();
+        }
+    });
+
+    return {
+        get selected(){ return selected; },
+        reset(){
+            selected = null;
+            inputEl.value = '';
+            close();
+        }
+    };
+}
+
+// ================= 章节 → 页数 二级联动 =================
+const chapterInput = document.querySelector('#chapterInput');
+const chapterDropdown = document.querySelector('#chapterDropdown');
+const pagesInput = document.querySelector('#pagesInput');
+const pagesDropdown = document.querySelector('#pagesDropdown');
+const btnGo = document.querySelector('#btnGo');
 const chapterGrid = document.querySelector('#chapterGrid');
 const emptyTip = document.querySelector('#emptyTip');
-let activeIndex = -1;      // 下拉框当前高亮项
-let currentMatches = [];   // 当前搜索结果
 
 // 跳转到章节页面（相对路径，GitHub Pages 与本地 http 服务均可用）
 function gotoChapter(file){
     window.location.href = 'html/' + encodeURIComponent(file);
 }
 
-// 章节排序：章节号升序，页数按数字升序
-function sortedChapters(){
-    return [...chapterList].sort((a,b)=>
-        a.chapter - b.chapter || a.pages.localeCompare(b.pages, undefined, {numeric:true})
-    );
+// 章节号去重升序
+function chapterOptions(){
+    return [...new Set(chapterList.map(c => c.chapter))].sort((a,b)=>a-b).map(ch => ({chapter: ch}));
 }
 
-// 搜索匹配：支持章节号、页数、文件名模糊匹配（不区分大小写）
-function matchChapters(keyword){
-    const kw = keyword.trim().toLowerCase();
-    if(!kw) return sortedChapters();
-    return sortedChapters().filter(item=>{
-        const text = `chapter${item.chapter} 第${item.pages}页 ${item.file}`.toLowerCase();
-        return text.includes(kw);
-    });
+// 指定章节下的页数记录，按页数升序
+function pagesOptions(chapter){
+    return chapterList
+        .filter(c => c.chapter === chapter)
+        .sort((a,b)=> a.pages.localeCompare(b.pages, undefined, {numeric:true}));
 }
 
-// 关键词高亮
-function highlight(text, keyword){
-    if(!keyword) return text;
-    const idx = text.toLowerCase().indexOf(keyword.toLowerCase());
-    if(idx === -1) return text;
-    return text.slice(0,idx) + '<mark>' + text.slice(idx, idx+keyword.length) + '</mark>' + text.slice(idx+keyword.length);
-}
+let pagesCombo; // 先声明，章节选中回调里会用到
 
-// ================= 可搜索下拉框 =================
-function renderDropdown(keyword){
-    currentMatches = matchChapters(keyword);
-    activeIndex = currentMatches.length > 0 ? 0 : -1;
-    comboDropdown.innerHTML = '';
-    if(currentMatches.length === 0){
-        comboDropdown.innerHTML = '<div class="combo-empty">没有匹配的章节</div>';
-    }else{
-        const kw = keyword.trim();
-        currentMatches.forEach((item, idx)=>{
-            const div = document.createElement('div');
-            div.className = 'combo-option' + (idx === activeIndex ? ' active' : '');
-            div.innerHTML = `
-                <span class="opt-title">${highlight('Chapter ' + item.chapter, kw)}</span>
-                <span class="opt-meta">｜${highlight('第' + item.pages + '页', kw)} ｜ ${item.count} 词</span>
-            `;
-            // mousedown 先于 input 的 blur 触发，保证点击能跳转
-            div.addEventListener('mousedown', e=>{
-                e.preventDefault();
-                gotoChapter(item.file);
-            });
-            comboDropdown.appendChild(div);
-        });
-    }
-    comboDropdown.classList.add('open');
-}
-
-function closeDropdown(){
-    comboDropdown.classList.remove('open');
-    activeIndex = -1;
-}
-
-// 更新高亮项样式并滚动到可见区域
-function refreshActive(){
-    const opts = comboDropdown.querySelectorAll('.combo-option');
-    opts.forEach((el, idx)=>{
-        el.classList.toggle('active', idx === activeIndex);
-        if(idx === activeIndex) el.scrollIntoView({block:'nearest'});
-    });
-}
-
-searchInput.addEventListener('input', ()=>{
-    renderDropdown(searchInput.value);
-    renderChapterGrid(searchInput.value); // 同步过滤卡片列表
-});
-
-searchInput.addEventListener('focus', ()=>{
-    renderDropdown(searchInput.value);
-});
-
-searchInput.addEventListener('blur', ()=>{
-    // 延迟关闭，避免与选项点击冲突
-    setTimeout(closeDropdown, 120);
-});
-
-searchInput.addEventListener('keydown', e=>{
-    if(!comboDropdown.classList.contains('open')) return;
-    if(e.key === 'ArrowDown'){
-        e.preventDefault();
-        if(currentMatches.length > 0){
-            activeIndex = (activeIndex + 1) % currentMatches.length;
-            refreshActive();
+const chapterCombo = createCombo(chapterInput, chapterDropdown, {
+    getOptions: chapterOptions,
+    renderLabel: o => `Chapter ${o.chapter}`,
+    onSelect: (item)=>{
+        // 章节变化：重置页数框
+        pagesCombo && pagesCombo.reset();
+        btnGo.disabled = true;
+        if(item){
+            pagesInput.disabled = false;
+            const list = pagesOptions(item.chapter);
+            // 该章节只有一个页数区间时自动选中
+            if(list.length === 1){
+                pagesInput.value = `第${list[0].pages}页（${list[0].count}词）`;
+                pagesCombo.autoSelect(list[0]);
+            }else{
+                pagesInput.focus();
+            }
+        }else{
+            pagesInput.disabled = true;
         }
-    }else if(e.key === 'ArrowUp'){
-        e.preventDefault();
-        if(currentMatches.length > 0){
-            activeIndex = (activeIndex - 1 + currentMatches.length) % currentMatches.length;
-            refreshActive();
-        }
-    }else if(e.key === 'Enter'){
-        e.preventDefault();
-        if(activeIndex >= 0 && currentMatches[activeIndex]){
-            gotoChapter(currentMatches[activeIndex].file);
-        }
-    }else if(e.key === 'Escape'){
-        closeDropdown();
     }
 });
 
-// ================= 章节卡片列表（随搜索关键词过滤） =================
-function renderChapterGrid(keyword){
-    const matches = matchChapters(keyword || '');
+pagesCombo = createCombo(pagesInput, pagesDropdown, {
+    getOptions: ()=> chapterCombo.selected ? pagesOptions(chapterCombo.selected.chapter) : [],
+    renderLabel: o => `第${o.pages}页（${o.count}词）`,
+    onSelect: (item)=>{
+        btnGo.disabled = !item;
+    }
+});
+
+// 补充：外部直接设置页数选中项（单页数区间自动选中用）
+pagesCombo.autoSelect = function(item){
+    // 通过模拟选择保持内部状态一致
+    pagesInput.value = `第${item.pages}页（${item.count}词）`;
+    btnGo.disabled = false;
+    this._auto = item;
+};
+
+btnGo.addEventListener('click', ()=>{
+    const item = pagesCombo.selected || pagesCombo._auto;
+    if(item) gotoChapter(item.file);
+});
+
+// ================= 章节卡片列表 =================
+function renderChapterGrid(){
     chapterGrid.innerHTML = '';
-    if(matches.length === 0){
+    if(chapterList.length === 0){
         emptyTip.style.display = 'block';
         return;
     }
     emptyTip.style.display = 'none';
-    matches.forEach(item=>{
+    const sorted = [...chapterList].sort((a,b)=>
+        a.chapter - b.chapter || a.pages.localeCompare(b.pages, undefined, {numeric:true})
+    );
+    sorted.forEach(item=>{
         const a = document.createElement('a');
         a.className = 'chapter-card';
         a.href = 'html/' + encodeURIComponent(item.file);
@@ -320,7 +397,7 @@ function renderChapterGrid(keyword){
 }
 
 // ================= 初始化 =================
-renderChapterGrid('');
+renderChapterGrid();
 </script>
 </body>
 </html>
