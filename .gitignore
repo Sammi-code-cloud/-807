@@ -1,0 +1,21 @@
+# 操作系统
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 编辑器 / IDE
+.idea/
+.vscode/
+*.iml
+
+# Claude Code 本地配置
+.claude/
+
+# 临时文件
+*.tmp
+*.bak
+*.swp
+~$*
+
+# 听写导出的Excel结果（本地练习产物，不入库）
+*.xlsx
