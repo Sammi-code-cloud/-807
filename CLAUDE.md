@@ -17,8 +17,8 @@ english\
 ├── progress\
 │   └── progress.md     # 导入进度记录表
 ├── prompt\
-│   └── 提示词模板.md    # 可复用生成提示词
-└── 需求.md             # 听写页面功能的原始需求（硬性交互规则以此为准）
+│   ├── 提示词模板.md    # 可复用生成提示词
+│   └── 原始需求-勿删.md # 听写页面功能的原始需求（硬性交互规则以此为准）
 ```
 
 ## 核心工作流：新增章节听写页面
@@ -33,7 +33,7 @@ english\
 3. **登记进度**：在 `progress\progress.md` 导入进度总览表追加一行（含导入日期）
 4. **提交推送**：用户确认后 `git push`，GitHub Pages 自动更新
 
-## 听写页面硬性规则（详见 需求.md）
+## 听写页面硬性规则（详见 prompt\原始需求-勿删.md）
 
 - 发音：谷歌词典牛津真人美音 mp3 直链（禁止浏览器 TTS）
   `https://ssl.gstatic.com/dictionary/static/sounds/oxford/{单词}--_us_1.mp3`
