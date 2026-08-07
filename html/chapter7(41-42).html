@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>王陆807｜Chapter7(41-42)｜乱序听写 错题记录+Excel导出</title>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        body {
+            background-color: #f3f4f6;
+            padding: 20px 12px;
+            line-height: 1.65;
+        }
+        .container {
+            max-width: 920px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 2px 14px rgba(0,0,0,0.08);
+            padding: 28px;
+        }
+        h1 {
+            font-size: 1.45rem;
+            margin-bottom: 20px;
+            color: #1f2937;
+        }
+        .notice-protocol {
+            background-color: #fff1f0;
+            border: 1px solid #ffccc7;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: #cf1322;
+            font-weight: 500;
+        }
+        .summary-block {
+            background-color: #fffbe6;
+            border-left: 6px solid #facc15;
+            padding: 18px 20px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 28px;
+        }
+        .summary-block ul {
+            padding-left: 22px;
+            margin: 8px 0;
+        }
+        .dictation-panel {
+            background: #f0f7ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 24px;
+            border: 1px solid #b8d8ff;
+        }
+        .dictation-panel h3 {
+            margin-bottom: 14px;
+        }
+        .dictation-status {
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+        }
+        .stat-row {
+            font-size: 0.9rem;
+            color: #444;
+            margin-bottom: 8px;
+        }
+        .input-wrap {
+            margin: 14px 0;
+        }
+        #userInput {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 1.1rem;
+            border: 1px solid #99c8ff;
+            border-radius: 8px;
+        }
+        .result-area {
+            min-height: 80px;
+            background: #fff;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            margin: 12px 0;
+        }
+        .correct { color: #009944; font-weight: bold; }
+        .wrong { color: #d32f2f; font-weight: bold; }
+        .tip-red { color: #cf1322; font-size: 0.88rem; margin-top: 6px; }
+        .dict-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        button {
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-play { background: #1677ff; color: white; }
+        .btn-show { background: #27ae60; color: white; }
+        .btn-reset { background: #888; color: white; }
+        .btn-export { background: #722ed1; color: white; }
+
+        .final-result {
+            margin-top: 20px;
+            padding: 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+        .final-result h4 { margin-bottom: 10px; }
+        .item-correct { color: #009944; }
+        .item-wrong { color: #d32f2f; }
+        .result-list {
+            max-height: 320px;
+            overflow-y: auto;
+            font-size: 0.92rem;
+        }
+        .result-list > div {
+            padding: 4px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .word-list-title {
+            font-size: 1.1rem;
+            margin: 20px 0 6px;
+            color: #1f2937;
+        }
+        .word-item {
+            padding: 14px 16px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+        .word-item:hover {
+            background-color: #e6f4ff;
+        }
+        .word-main {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 14px;
+            align-items: baseline;
+        }
+        .en-word {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #1677ff;
+        }
+        .phonetic {
+            color: #555;
+            font-family: "Times New Roman", serif;
+        }
+        .cn-mean {
+            color: #222;
+        }
+        .tip-text {
+            color: #cf1322;
+            font-size: 0.88rem;
+            margin-top: 6px;
+        }
+        audio {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>王陆807｜Chapter7(41-42)｜乱序听写｜错题记录+Excel导出</h1>
+        <div class="notice-protocol">
+            ⚠️请通过 GitHub Pages 或 http 服务访问本页面，不要双击 html 用 file:// 协议打开，否则音频可能无法播放。
+        </div>
+
+        <div class="summary-block">
+            <h2>章节说明（Chapter7 · 第41-42页 · 共55词）</h2>
+            <p>本页单词覆盖雅思听力 S1-S4，移民历史、农业环保、健康心理场景高频，注意以下拼写陷阱：</p>
+            <ul>
+                <li>①双写字母陷阱：territory 双r、unnecessary 双n开头且c后双s、settler 双t</li>
+                <li>②美式拼写：humor / odor（英式humour/odour，听写按美式即可）</li>
+                <li>③复数考点：casualties（y变ies）、cosmetics、guidelines 录音常读复数</li>
+                <li>④易混词：immigrant(移入者)≠emigrant(移出者)、complex↔complexity、agriculture↔agricultural</li>
+                <li>⑤长难拼写：skyscraper、herbivorous、pesticide、reflectance、ingredient</li>
+            </ul>
+            <p><strong>操作说明：</strong>听读音后输入单词，按回车提交判分；答错不跳题，错误信息停留页面，再按一次回车才进入下一题；答对同样需回车切题。全部完成后展示对错清单，可导出Excel。</p>
+        </div>
+
+        <div class="dictation-panel">
+            <h3>🎧乱序听写</h3>
+            <div class="dictation-status">进度：<span id="dict-index">0</span> / <span id="dict-total">0</span></div>
+            <div class="stat-row">✅正确：<span id="cntRight">0</span> ｜ ❌错误：<span id="cntWrong">0</span> ｜ 正确率：<span id="rate">0%</span></div>
+            <div class="input-wrap">
+                <input type="text" id="userInput" placeholder="听读音，输入单词，回车提交..." autocomplete="off">
+            </div>
+            <div class="result-area">
+                <div id="feedback"></div>
+                <div id="answerTip" class="tip-red"></div>
+            </div>
+            <div class="dict-buttons">
+                <button class="btn-play" id="btnPlay">🔊重听当前</button>
+                <button class="btn-show" id="btnShowAnswer">👁显示标准答案</button>
+                <button class="btn-reset" id="btnReset">🔄重置&重新乱序</button>
+                <button class="btn-export" id="btnExport" disabled>📥导出Excel</button>
+            </div>
+        </div>
+
+        <div id="finalResultWrap" class="final-result" style="display:none;">
+            <h4>📋本次练习完整记录</h4>
+            <div id="resultListBox" class="result-list"></div>
+        </div>
+
+        <h3 class="word-list-title">📚本章完整单词库（点击任意单词播放美音）</h3>
+        <div class="word-list" id="wordListBox"></div>
+    </div>
+
+<script>
+// ================= 单词数据源（Chapter7 第41-42页，共55词） =================
+// 每项格式：{"w":"单词","phonetic":"音标","zh":"中文释义","tip":"考试提示"}
+const wordListRaw = [
+    {w:"panel",phonetic:"[ˈpænl]",zh:"n. 面板；专家小组",tip:"⚠️单n，solar panel太阳能板S4高频"},
+    {w:"translation",phonetic:"[trænzˈleɪʃn]",zh:"n. 翻译",tip:"语言学习话题"},
+    {w:"humor",phonetic:"[ˈhjuːmər]",zh:"n. 幽默",tip:"⚠️美式拼写（英式humour），心理话题"},
+    {w:"odor",phonetic:"[ˈəʊdər]",zh:"n. 气味",tip:"⚠️美式拼写（英式odour），生物化学场景"},
+    {w:"immigrant",phonetic:"[ˈɪmɪɡrənt]",zh:"n. （外来）移民",tip:"⚠️双m，区分emigrant(移出者)，历史话题"},
+    {w:"immigration",phonetic:"[ˌɪmɪˈɡreɪʃn]",zh:"n. 移民（行为）",tip:"⚠️双m，历史社会话题，注意与immigrant区分"},
+    {w:"territory",phonetic:"[ˈterətri]",zh:"n. 领土，领地",tip:"⚠️双r，动物领地/历史话题"},
+    {w:"generation",phonetic:"[ˌdʒenəˈreɪʃn]",zh:"n. 一代人；产生",tip:"社会话题，发电场景也考"},
+    {w:"complex",phonetic:"[ˈkɒmpleks]",zh:"adj. 复杂的 n. 综合体",tip:"sports complex体育中心S1场景"},
+    {w:"complexity",phonetic:"[kəmˈpleksəti]",zh:"n. 复杂性",tip:"⚠️派生词考点，学术讲座"},
+    {w:"cosmetics",phonetic:"[kɒzˈmetɪks]",zh:"n. 化妆品（复数）",tip:"⚠️常考复数带s，商业购物场景"},
+    {w:"perfume",phonetic:"[ˈpɜːfjuːm]",zh:"n. 香水",tip:"购物、化学话题"},
+    {w:"pirate",phonetic:"[ˈpaɪrət]",zh:"n. 海盗",tip:"⚠️结尾rate，历史航海话题"},
+    {w:"aspiration",phonetic:"[ˌæspəˈreɪʃn]",zh:"n. 抱负，渴望",tip:"教育职业话题，区分inspiration(灵感)"},
+    {w:"template",phonetic:"[ˈtempleɪt]",zh:"n. 模板",tip:"⚠️结尾plate，学术写作场景"},
+    {w:"vision",phonetic:"[ˈvɪʒn]",zh:"n. 视力；愿景",tip:"健康体检、企业话题多义词"},
+    {w:"bag",phonetic:"[bæɡ]",zh:"n. 包，袋子",tip:"S1物品场景基础词"},
+    {w:"napkin",phonetic:"[ˈnæpkɪn]",zh:"n. 餐巾",tip:"餐厅场景，注意kin结尾"},
+    {w:"partner",phonetic:"[ˈpɑːtnə(r)]",zh:"n. 伙伴，合伙人",tip:"商业合作场景"},
+    {w:"correct",phonetic:"[kəˈrekt]",zh:"adj. 正确的 v. 改正",tip:"⚠️双r，基础高频"},
+    {w:"incorrect",phonetic:"[ˌɪnkəˈrekt]",zh:"adj. 不正确的",tip:"⚠️前缀in+双r，反义派生"},
+    {w:"pain",phonetic:"[peɪn]",zh:"n. 疼痛",tip:"医疗健康场景，区分pane(玻璃板)"},
+    {w:"reluctant",phonetic:"[rɪˈlʌktənt]",zh:"adj. 不情愿的",tip:"⚠️结尾tant，心理态度词"},
+    {w:"shock",phonetic:"[ʃɒk]",zh:"n./v. 震惊；电击",tip:"医疗、心理场景"},
+    {w:"disorder",phonetic:"[dɪsˈɔːdə(r)]",zh:"n. 紊乱，失调",tip:"sleep disorder睡眠障碍，健康话题"},
+    {w:"disguise",phonetic:"[dɪsˈɡaɪz]",zh:"n./v. 伪装",tip:"⚠️gui拼写坑，动物保护色话题"},
+    {w:"confusion",phonetic:"[kənˈfjuːʒn]",zh:"n. 困惑，混乱",tip:"心理话题，动词confuse"},
+    {w:"feeling",phonetic:"[ˈfiːlɪŋ]",zh:"n. 感觉，感受",tip:"⚠️双e，心理话题基础词"},
+    {w:"necessary",phonetic:"[ˈnesəsəri]",zh:"adj. 必要的",tip:"⚠️一个c两个s，拼写大坑"},
+    {w:"unnecessary",phonetic:"[ʌnˈnesəsəri]",zh:"adj. 不必要的",tip:"⚠️前缀un+双n，拼写大坑"},
+    {w:"purchase",phonetic:"[ˈpɜːtʃəs]",zh:"n./v. 购买",tip:"⚠️结尾chase，商业场景高频"},
+    {w:"agricultural",phonetic:"[ˌæɡrɪˈkʌltʃərəl]",zh:"adj. 农业的",tip:"长词，农业环保S4话题"},
+    {w:"agriculture",phonetic:"[ˈæɡrɪkʌltʃə(r)]",zh:"n. 农业",tip:"⚠️与agricultural词性区分，S4高频"},
+    {w:"pesticide",phonetic:"[ˈpestɪsaɪd]",zh:"n. 杀虫剂，农药",tip:"⚠️结尾cide，农业环保话题"},
+    {w:"contribution",phonetic:"[ˌkɒntrɪˈbjuːʃn]",zh:"n. 贡献",tip:"学术社会话题，动词contribute"},
+    {w:"control",phonetic:"[kənˈtrəʊl]",zh:"n./v. 控制",tip:"⚠️单l结尾，实验对照组场景"},
+    {w:"extreme",phonetic:"[ɪkˈstriːm]",zh:"adj. 极端的 n. 极端",tip:"极端天气/运动话题"},
+    {w:"poverty",phonetic:"[ˈpɒvəti]",zh:"n. 贫困",tip:"⚠️结尾erty，社会话题"},
+    {w:"casualty",phonetic:"[ˈkæʒuəlti]",zh:"n. 伤亡人员",tip:"⚠️拼写坑casual+ty，事故历史话题"},
+    {w:"casualties",phonetic:"[ˈkæʒuəltiz]",zh:"n. 伤亡人员（复数）",tip:"⚠️y变ies，录音常读复数"},
+    {w:"barrier",phonetic:"[ˈbæriə(r)]",zh:"n. 屏障，障碍",tip:"⚠️双r，大堡礁Great Barrier Reef"},
+    {w:"crew",phonetic:"[kruː]",zh:"n. 全体船员/机组人员",tip:"航海航空场景，集合名词"},
+    {w:"guideline",phonetic:"[ˈɡaɪdlaɪn]",zh:"n. 指导方针，准则",tip:"⚠️gui拼写，常考复数guidelines"},
+    {w:"humidity",phonetic:"[hjuːˈmɪdəti]",zh:"n. 湿度",tip:"气候实验场景S4高频"},
+    {w:"herbivorous",phonetic:"[hɜːˈbɪvərəs]",zh:"adj. 食草的",tip:"⚠️长难词，动物学话题，对比carnivorous食肉的"},
+    {w:"tongue",phonetic:"[tʌŋ]",zh:"n. 舌头；语言",tip:"⚠️拼写大坑ngue，mother tongue母语"},
+    {w:"reflectance",phonetic:"[rɪˈflektəns]",zh:"n. 反射率",tip:"⚠️结尾ance，物理实验讲座"},
+    {w:"midden",phonetic:"[ˈmɪdn]",zh:"n. 贝丘，垃圾堆（考古）",tip:"⚠️双d，考古话题生僻词"},
+    {w:"ax",phonetic:"[æks]",zh:"n. 斧头",tip:"⚠️美式拼写（英式axe），考古工具话题"},
+    {w:"settler",phonetic:"[ˈsetlə(r)]",zh:"n. 移民者，定居者",tip:"⚠️双t，殖民历史话题"},
+    {w:"soldier",phonetic:"[ˈsəʊldʒə(r)]",zh:"n. 士兵",tip:"⚠️dier拼写坑，历史战争话题"},
+    {w:"bonus",phonetic:"[ˈbəʊnəs]",zh:"n. 奖金，红利",tip:"职场薪酬场景S1"},
+    {w:"hook",phonetic:"[hʊk]",zh:"n. 钩子 v. 钩住",tip:"S1物品工具场景，双o"},
+    {w:"skyscraper",phonetic:"[ˈskaɪskreɪpə(r)]",zh:"n. 摩天大楼",tip:"⚠️长词sky+scraper，城市建筑话题"},
+    {w:"ingredient",phonetic:"[ɪnˈɡriːdiənt]",zh:"n. 成分，原料",tip:"⚠️拼写坑ie组合，烹饪食品话题"},
+];
+
+// ================= 音频播放（谷歌词典牛津真人美音，禁止TTS） =================
+let currentAudio = null;
+
+function stopAudio(){
+    if(currentAudio){
+        currentAudio.pause();
+        currentAudio.remove();
+        currentAudio = null;
+    }
+}
+
+// 生成谷歌词典mp3直链
+function audioUrl(word, variant){
+    return `https://ssl.gstatic.com/dictionary/static/sounds/oxford/${word}--_us_${variant}.mp3`;
+}
+
+// 播放单词读音：us_1失败尝试us_2，仍失败且是复数时回退播放单数形式
+function playWordAudio(word){
+    stopAudio();
+    const w = word.toLowerCase();
+    const tryList = [audioUrl(w,1), audioUrl(w,2)];
+    if(w.endsWith('s')) tryList.push(audioUrl(w.slice(0,-1),1)); // 复数回退单数
+    let idx = 0;
+    const tryPlay = ()=>{
+        if(idx >= tryList.length){
+            console.warn('音频不可用: ' + word);
+            return;
+        }
+        const audio = new Audio(tryList[idx]);
+        document.body.appendChild(audio);
+        currentAudio = audio;
+        audio.onerror = ()=>{
+            audio.remove();
+            if(currentAudio === audio) currentAudio = null;
+            idx++;
+            tryPlay();
+        };
+        audio.onended = ()=>{
+            audio.remove();
+            if(currentAudio === audio) currentAudio = null;
+        };
+        audio.play().catch(e=>console.error(e));
+    };
+    tryPlay();
+}
+
+// ================= 听写练习逻辑 =================
+let shuffledList = [];
+let dictCur = 0;
+let cntRight = 0;
+let cntWrong = 0;
+let answerRecords = [];
+let waitingNext = false; // 判分后等待回车切题的标志
+
+const elIndex = document.querySelector('#dict-index');
+const elTotal = document.querySelector('#dict-total');
+const cntRightEl = document.querySelector('#cntRight');
+const cntWrongEl = document.querySelector('#cntWrong');
+const rateEl = document.querySelector('#rate');
+const userInput = document.querySelector('#userInput');
+const feedback = document.querySelector('#feedback');
+const answerTip = document.querySelector('#answerTip');
+const btnPlay = document.querySelector('#btnPlay');
+const btnShowAnswer = document.querySelector('#btnShowAnswer');
+const btnReset = document.querySelector('#btnReset');
+const btnExport = document.querySelector('#btnExport');
+const finalResultWrap = document.querySelector('#finalResultWrap');
+const resultListBox = document.querySelector('#resultListBox');
+const wordListBox = document.querySelector('#wordListBox');
+
+// Fisher-Yates 洗牌
+function shuffle(arr){
+    const copy = [...arr];
+    for(let i = copy.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [copy[i],copy[j]] = [copy[j],copy[i]];
+    }
+    return copy;
+}
+
+function updateStat(){
+    cntRightEl.innerText = cntRight;
+    cntWrongEl.innerText = cntWrong;
+    const totalDone = cntRight + cntWrong;
+    const rate = totalDone === 0 ? "0%" : Math.round((cntRight/totalDone)*100)+"%";
+    rateEl.innerText = rate;
+}
+
+// 全部完成后渲染对错清单
+function renderFinalList(){
+    finalResultWrap.style.display = 'block';
+    btnExport.disabled = false;
+    resultListBox.innerHTML = '';
+    answerRecords.forEach(rec=>{
+        const div = document.createElement('div');
+        if(rec.isOk){
+            div.className = 'item-correct';
+            div.innerText = `✅ ${rec.word.w} | ${rec.word.zh} | ${rec.word.tip}`;
+        }else{
+            div.className = 'item-wrong';
+            div.innerText = `❌ ${rec.word.w} | 你的输入:"${rec.userInput || '(空)'}" | ${rec.word.zh} | ${rec.word.tip}`;
+        }
+        resultListBox.appendChild(div);
+    });
+}
+
+// 导出Excel（SheetJS）
+function exportExcel(){
+    const data = [
+        ["序号","标准答案单词","中文释义","是否正确","用户输入","考点提示"]
+    ];
+    answerRecords.forEach((rec, idx)=>{
+        data.push([
+            idx+1,
+            rec.word.w,
+            rec.word.zh,
+            rec.isOk ? "正确" : "错误",
+            rec.userInput || "(空)",
+            rec.word.tip
+        ]);
+    });
+    // 汇总行
+    data.push([]);
+    data.push(["汇总",`总题:${shuffledList.length}`,`正确:${cntRight}`,`错误:${cntWrong}`,`正确率:${rateEl.innerText}`,""]);
+
+    const ws = XLSX.utils.aoa_to_sheet(data);
+    // 设置列宽，WPS/Excel可直接打开
+    ws['!cols'] = [
+        {wch:6},{wch:18},{wch:30},{wch:10},{wch:20},{wch:44}
+    ];
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "听写结果");
+    XLSX.writeFile(wb, "Chapter7(41-42)听写练习结果.xlsx");
+}
+
+// 渲染当前题目：清空输入与反馈，自动播放读音
+function renderDict(){
+    stopAudio();
+    userInput.value = "";
+    feedback.innerHTML = "";
+    answerTip.innerText = "";
+    waitingNext = false;
+    elTotal.innerText = shuffledList.length;
+
+    if(dictCur >= shuffledList.length){
+        feedback.innerHTML = `<div class="correct">✅练习全部结束！正确率：${rateEl.innerText}</div>`;
+        userInput.disabled = true; // 练习结束禁用输入框
+        renderFinalList();
+        return;
+    }
+    userInput.disabled = false;
+    elIndex.innerText = dictCur+1;
+    userInput.focus();
+    setTimeout(()=>{
+        playWordAudio(shuffledList[dictCur].w);
+    },200);
+}
+
+// 回车提交判分：对错都停留页面，再按回车才切题
+function checkAnswer(){
+    if(dictCur >= shuffledList.length) return;
+    const item = shuffledList[dictCur];
+    const correct = item.w.toLowerCase();
+    const inputVal = userInput.value.trim();
+    const inputLow = inputVal.toLowerCase();
+    const isOk = (inputLow === correct);
+
+    answerRecords.push({
+        word: item,
+        userInput: inputVal,
+        isOk: isOk
+    });
+
+    if(isOk){
+        cntRight++;
+        feedback.innerHTML = `<div class="correct">✔正确！${item.w} ${item.phonetic}｜${item.zh}</div>`;
+    }else{
+        cntWrong++;
+        feedback.innerHTML = `<div class="wrong">✘错误｜你输入：${inputVal || "(空)"}，标准答案：${item.w} ${item.phonetic}｜${item.zh}</div>`;
+    }
+    answerTip.innerText = "tip："+item.tip;
+    updateStat();
+    waitingNext = true; // 等待再次回车切题
+}
+
+function goNext(){
+    dictCur++;
+    renderDict();
+}
+
+// 重置：重新乱序，清空记录统计结果面板
+function initReset(){
+    shuffledList = shuffle(wordListRaw);
+    dictCur = 0;
+    cntRight = 0;
+    cntWrong = 0;
+    answerRecords = [];
+    waitingNext = false;
+    finalResultWrap.style.display = 'none';
+    btnExport.disabled = true;
+    updateStat();
+    renderDict();
+}
+
+// ================= 底部单词库列表（由wordListRaw动态渲染） =================
+function renderWordList(){
+    wordListBox.innerHTML = '';
+    wordListRaw.forEach(item=>{
+        const div = document.createElement('div');
+        div.className = 'word-item';
+        div.innerHTML = `
+            <div class="word-main">
+                <span class="en-word">${item.w}</span>
+                <span class="phonetic">${item.phonetic}</span>
+                <span class="cn-mean">${item.zh}</span>
+            </div>
+            <div class="tip-text">tip：${item.tip}</div>
+        `;
+        div.addEventListener('click', ()=>playWordAudio(item.w));
+        wordListBox.appendChild(div);
+    });
+}
+
+// ================= 事件绑定 =================
+btnPlay.onclick = ()=>{
+    if(dictCur < shuffledList.length){
+        playWordAudio(shuffledList[dictCur].w);
+    }
+};
+
+btnShowAnswer.onclick = ()=>{
+    if(dictCur >= shuffledList.length) return;
+    const item = shuffledList[dictCur];
+    feedback.innerHTML = `<div class="wrong">标准答案：${item.w} ${item.phonetic}｜${item.zh}</div>`;
+    answerTip.innerText = "tip："+item.tip;
+};
+
+btnReset.onclick = initReset;
+btnExport.onclick = exportExcel;
+
+userInput.addEventListener('keydown',e=>{
+    if(e.key === 'Enter'){
+        e.preventDefault();
+        if(!waitingNext){
+            checkAnswer();
+        }else{
+            goNext();
+        }
+    }
+});
+
+// ================= 初始化 =================
+renderWordList();
+initReset();
+</script>
+</body>
+</html>
