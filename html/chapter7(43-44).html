@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>王陆807｜Chapter7(43-44)｜乱序听写 错题记录+Excel导出</title>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        body {
+            background-color: #f3f4f6;
+            padding: 20px 12px;
+            line-height: 1.65;
+        }
+        .container {
+            max-width: 920px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 2px 14px rgba(0,0,0,0.08);
+            padding: 28px;
+        }
+        h1 {
+            font-size: 1.45rem;
+            margin-bottom: 20px;
+            color: #1f2937;
+        }
+        .notice-protocol {
+            background-color: #fff1f0;
+            border: 1px solid #ffccc7;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: #cf1322;
+            font-weight: 500;
+        }
+        .summary-block {
+            background-color: #fffbe6;
+            border-left: 6px solid #facc15;
+            padding: 18px 20px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 28px;
+        }
+        .summary-block ul {
+            padding-left: 22px;
+            margin: 8px 0;
+        }
+        .dictation-panel {
+            background: #f0f7ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 24px;
+            border: 1px solid #b8d8ff;
+        }
+        .dictation-panel h3 {
+            margin-bottom: 14px;
+        }
+        .dictation-status {
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+        }
+        .stat-row {
+            font-size: 0.9rem;
+            color: #444;
+            margin-bottom: 8px;
+        }
+        .input-wrap {
+            margin: 14px 0;
+        }
+        #userInput {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 1.1rem;
+            border: 1px solid #99c8ff;
+            border-radius: 8px;
+        }
+        .result-area {
+            min-height: 80px;
+            background: #fff;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            margin: 12px 0;
+        }
+        .correct { color: #009944; font-weight: bold; }
+        .wrong { color: #d32f2f; font-weight: bold; }
+        .tip-red { color: #cf1322; font-size: 0.88rem; margin-top: 6px; }
+        .dict-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        button {
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-play { background: #1677ff; color: white; }
+        .btn-show { background: #27ae60; color: white; }
+        .btn-reset { background: #888; color: white; }
+        .btn-export { background: #722ed1; color: white; }
+
+        .final-result {
+            margin-top: 20px;
+            padding: 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+        .final-result h4 { margin-bottom: 10px; }
+        .item-correct { color: #009944; }
+        .item-wrong { color: #d32f2f; }
+        .result-list {
+            max-height: 320px;
+            overflow-y: auto;
+            font-size: 0.92rem;
+        }
+        .result-list > div {
+            padding: 4px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .word-list-title {
+            font-size: 1.1rem;
+            margin: 20px 0 6px;
+            color: #1f2937;
+        }
+        .word-item {
+            padding: 14px 16px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+        .word-item:hover {
+            background-color: #e6f4ff;
+        }
+        .word-main {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 14px;
+            align-items: baseline;
+        }
+        .en-word {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #1677ff;
+        }
+        .phonetic {
+            color: #555;
+            font-family: "Times New Roman", serif;
+        }
+        .cn-mean {
+            color: #222;
+        }
+        .tip-text {
+            color: #cf1322;
+            font-size: 0.88rem;
+            margin-top: 6px;
+        }
+        audio {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>王陆807｜Chapter7(43-44)｜乱序听写｜错题记录+Excel导出</h1>
+        <div class="notice-protocol">
+            ⚠️请通过 GitHub Pages 或 http 服务访问本页面，不要双击 html 用 file:// 协议打开，否则音频可能无法播放。
+        </div>
+
+        <div class="summary-block">
+            <h2>章节说明（Chapter7 · 第43-44页 · 共55词）</h2>
+            <p>本章单词覆盖雅思听力 S1-S4，地理、化学、健康、购物、交通场景高频，注意以下拼写陷阱：</p>
+            <ul>
+                <li>①不发音字母陷阱：aisle 的 s 不发音；drought 的 gh 不发音；wholesale 开头 wh</li>
+                <li>②双写字母陷阱：funnel 双n；mission 双s</li>
+                <li>③复数考点：chemicals / angles / characteristics 录音常读复数</li>
+                <li>④易混词：pause≠pose、warning≠warming、angle≠angel、tail≠tale、retail↔wholesale</li>
+                <li>⑤词性派生：product→production、concentrate→concentrated</li>
+            </ul>
+            <p><strong>操作说明：</strong>听读音后输入单词，按回车提交判分；答错不跳题，错误信息停留页面，再按一次回车才进入下一题；答对同样需回车切题。全部完成后展示对错清单，可导出Excel。</p>
+        </div>
+
+        <div class="dictation-panel">
+            <h3>🎧乱序听写</h3>
+            <div class="dictation-status">进度：<span id="dict-index">0</span> / <span id="dict-total">0</span></div>
+            <div class="stat-row">✅正确：<span id="cntRight">0</span> ｜ ❌错误：<span id="cntWrong">0</span> ｜ 正确率：<span id="rate">0%</span></div>
+            <div class="input-wrap">
+                <input type="text" id="userInput" placeholder="听读音，输入单词，回车提交..." autocomplete="off">
+            </div>
+            <div class="result-area">
+                <div id="feedback"></div>
+                <div id="answerTip" class="tip-red"></div>
+            </div>
+            <div class="dict-buttons">
+                <button class="btn-play" id="btnPlay">🔊重听当前</button>
+                <button class="btn-show" id="btnShowAnswer">👁显示标准答案</button>
+                <button class="btn-reset" id="btnReset">🔄重置&重新乱序</button>
+                <button class="btn-export" id="btnExport" disabled>📥导出Excel</button>
+            </div>
+        </div>
+
+        <div id="finalResultWrap" class="final-result" style="display:none;">
+            <h4>📋本次练习完整记录</h4>
+            <div id="resultListBox" class="result-list"></div>
+        </div>
+
+        <h3 class="word-list-title">📚本章完整单词库（点击任意单词播放美音）</h3>
+        <div class="word-list" id="wordListBox"></div>
+    </div>
+
+<script>
+// ================= 单词数据源（Chapter7 第43-44页，共55词） =================
+// 每项格式：{"w":"单词","phonetic":"音标","zh":"中文释义","tip":"考试提示"}
+const wordListRaw = [
+    {w:"ditch",phonetic:"[dɪtʃ]",zh:"n. 沟渠 v. 丢弃",tip:"农业灌溉、乡村场景填空"},
+    {w:"funnel",phonetic:"[ˈfʌnl]",zh:"n. 漏斗；烟囱",tip:"⚠️双n，实验器材场景高频"},
+    {w:"symbol",phonetic:"[ˈsɪmbl]",zh:"n. 符号，象征",tip:"⚠️别拼成symble，文化历史话题"},
+    {w:"motivation",phonetic:"[ˌməʊtɪˈveɪʃn]",zh:"n. 动机，积极性",tip:"心理学、教育话题高频"},
+    {w:"reaction",phonetic:"[riˈækʃn]",zh:"n. 反应",tip:"化学实验、心理话题"},
+    {w:"archive",phonetic:"[ˈɑːkaɪv]",zh:"n. 档案（馆） v. 存档",tip:"⚠️ch发/k/音，图书馆场景"},
+    {w:"quick",phonetic:"[kwɪk]",zh:"adj. 快的，迅速的",tip:"基础词，注意ck结尾"},
+    {w:"absence",phonetic:"[ˈæbsəns]",zh:"n. 缺席，缺乏",tip:"⚠️结尾ence不是ance"},
+    {w:"calculator",phonetic:"[ˈkælkjuleɪtə(r)]",zh:"n. 计算器",tip:"⚠️结尾or不是er，S1物品场景"},
+    {w:"box",phonetic:"[bɒks]",zh:"n. 盒子，箱子",tip:"基础词，S1物品清单场景"},
+    {w:"request",phonetic:"[rɪˈkwest]",zh:"n./v. 请求，要求",tip:"S1咨询预订场景"},
+    {w:"heart",phonetic:"[hɑːt]",zh:"n. 心脏，核心",tip:"健康医疗话题，注意ear组合"},
+    {w:"low-risk",phonetic:"[ˌləʊ ˈrɪsk]",zh:"adj. 低风险的",tip:"⚠️连字符复合词，投资/健康话题"},
+    {w:"apology",phonetic:"[əˈpɒlədʒi]",zh:"n. 道歉",tip:"⚠️名词结尾gy，区分动词apologize"},
+    {w:"entire",phonetic:"[ɪnˈtaɪə(r)]",zh:"adj. 整个的，全部的",tip:"注意en开头不是in"},
+    {w:"characteristics",phonetic:"[ˌkærəktəˈrɪstɪks]",zh:"n. 特征，特点（复数）",tip:"⚠️长词高频，录音常读复数，别漏s"},
+    {w:"cabin",phonetic:"[ˈkæbɪn]",zh:"n. 小木屋，客舱",tip:"⚠️单b，度假住宿场景"},
+    {w:"sustainable",phonetic:"[səˈsteɪnəbl]",zh:"adj. 可持续的",tip:"环保话题S4高频，注意able结尾"},
+    {w:"fight",phonetic:"[faɪt]",zh:"n./v. 斗争，搏斗",tip:"gh不发音，区分flight"},
+    {w:"downhill",phonetic:"[ˌdaʊnˈhɪl]",zh:"adv./adj. 下坡（的）",tip:"⚠️双l，滑雪骑行运动场景"},
+    {w:"gear",phonetic:"[ɡɪə(r)]",zh:"n. 齿轮；装备",tip:"户外运动装备场景高频"},
+    {w:"pause",phonetic:"[pɔːz]",zh:"n./v. 暂停，停顿",tip:"⚠️区分pose(姿势)，au组合"},
+    {w:"concrete",phonetic:"[ˈkɒŋkriːt]",zh:"n. 混凝土 adj. 具体的",tip:"建筑材料话题S4高频"},
+    {w:"chemical",phonetic:"[ˈkemɪkl]",zh:"n. 化学品 adj. 化学的",tip:"⚠️ch发/k/音，实验环保话题"},
+    {w:"chemicals",phonetic:"[ˈkemɪklz]",zh:"n. 化学品（复数）",tip:"⚠️复数考点，录音读/z/尾音别漏s"},
+    {w:"crowded",phonetic:"[ˈkraʊdɪd]",zh:"adj. 拥挤的",tip:"城市交通话题，注意ed结尾"},
+    {w:"stroke",phonetic:"[strəʊk]",zh:"n. 中风；划水；笔画",tip:"医疗健康、游泳场景多义词"},
+    {w:"nightmare",phonetic:"[ˈnaɪtmeə(r)]",zh:"n. 噩梦",tip:"⚠️结尾mare，睡眠心理话题"},
+    {w:"retail",phonetic:"[ˈriːteɪl]",zh:"n. 零售",tip:"商业话题，对比wholesale批发"},
+    {w:"wholesale",phonetic:"[ˈhəʊlseɪl]",zh:"n. 批发",tip:"⚠️wh开头别漏w，商业话题"},
+    {w:"angle",phonetic:"[ˈæŋɡl]",zh:"n. 角度",tip:"⚠️区分angel(天使)，几何实验场景"},
+    {w:"angles",phonetic:"[ˈæŋɡlz]",zh:"n. 角度（复数）",tip:"⚠️复数考点，别漏s"},
+    {w:"mission",phonetic:"[ˈmɪʃn]",zh:"n. 任务，使命",tip:"⚠️双s，科研航天话题"},
+    {w:"comprehension",phonetic:"[ˌkɒmprɪˈhenʃn]",zh:"n. 理解（力）",tip:"长词，教育语言学习话题"},
+    {w:"port",phonetic:"[pɔːt]",zh:"n. 港口",tip:"地理交通场景，区分pot"},
+    {w:"leg",phonetic:"[leɡ]",zh:"n. 腿；（赛程的）一段",tip:"旅程分段场景考多义"},
+    {w:"aisle",phonetic:"[aɪl]",zh:"n. 过道，通道",tip:"⚠️s不发音，超市飞机场景，别拼成isle"},
+    {w:"highway",phonetic:"[ˈhaɪweɪ]",zh:"n. 公路，高速路",tip:"交通场景，gh不发音"},
+    {w:"digestion",phonetic:"[daɪˈdʒestʃən]",zh:"n. 消化",tip:"生物健康话题S4"},
+    {w:"target",phonetic:"[ˈtɑːɡɪt]",zh:"n. 目标，靶子",tip:"⚠️结尾get，商业科研话题"},
+    {w:"job",phonetic:"[dʒɒb]",zh:"n. 工作，职位",tip:"S1求职场景基础词"},
+    {w:"erosion",phonetic:"[ɪˈrəʊʒn]",zh:"n. 侵蚀，腐蚀",tip:"⚠️地理S4高频，海岸土壤话题"},
+    {w:"stem",phonetic:"[stem]",zh:"n. 茎，干",tip:"植物学话题，区分steam"},
+    {w:"drought",phonetic:"[draʊt]",zh:"n. 干旱",tip:"⚠️gh不发音，拼写大坑，气候话题"},
+    {w:"gravity",phonetic:"[ˈɡrævəti]",zh:"n. 重力，引力",tip:"物理讲座S4，注意vity结尾"},
+    {w:"container",phonetic:"[kənˈteɪnə(r)]",zh:"n. 容器，集装箱",tip:"结尾er，物流实验场景"},
+    {w:"lid",phonetic:"[lɪd]",zh:"n. 盖子",tip:"实验器材场景，短词别听漏"},
+    {w:"warning",phonetic:"[ˈwɔːnɪŋ]",zh:"n. 警告，预警",tip:"⚠️区分warming(变暖)，只有一个r后无a"},
+    {w:"random",phonetic:"[ˈrændəm]",zh:"adj. 随机的",tip:"⚠️结尾dom，实验方法场景"},
+    {w:"product",phonetic:"[ˈprɒdʌkt]",zh:"n. 产品",tip:"商业话题，区分produce"},
+    {w:"production",phonetic:"[prəˈdʌkʃn]",zh:"n. 生产，制造",tip:"⚠️派生词考点，工厂话题"},
+    {w:"concentrate",phonetic:"[ˈkɒnsntreɪt]",zh:"v. 集中；浓缩",tip:"学习方法、化学话题"},
+    {w:"concentrated",phonetic:"[ˈkɒnsntreɪtɪd]",zh:"adj. 浓缩的，集中的",tip:"⚠️ed结尾别漏，果汁化学场景"},
+    {w:"basin",phonetic:"[ˈbeɪsn]",zh:"n. 盆地；水盆",tip:"⚠️地理S4高频，结尾sin"},
+    {w:"tail",phonetic:"[teɪl]",zh:"n. 尾巴，尾部",tip:"⚠️区分tale(故事)，动物话题"},
+];
+
+// ================= 音频播放（谷歌词典牛津真人美音，禁止TTS） =================
+let currentAudio = null;
+
+function stopAudio(){
+    if(currentAudio){
+        currentAudio.pause();
+        currentAudio.remove();
+        currentAudio = null;
+    }
+}
+
+// 生成谷歌词典mp3直链
+function audioUrl(word, variant){
+    return `https://ssl.gstatic.com/dictionary/static/sounds/oxford/${word}--_us_${variant}.mp3`;
+}
+
+// 播放单词读音：us_1失败尝试us_2，仍失败且是复数时回退播放单数形式
+function playWordAudio(word){
+    stopAudio();
+    const w = word.toLowerCase();
+    const tryList = [audioUrl(w,1), audioUrl(w,2)];
+    if(w.endsWith('s')) tryList.push(audioUrl(w.slice(0,-1),1)); // 复数回退单数
+    let idx = 0;
+    const tryPlay = ()=>{
+        if(idx >= tryList.length){
+            console.warn('音频不可用: ' + word);
+            return;
+        }
+        const audio = new Audio(tryList[idx]);
+        document.body.appendChild(audio);
+        currentAudio = audio;
+        audio.onerror = ()=>{
+            audio.remove();
+            if(currentAudio === audio) currentAudio = null;
+            idx++;
+            tryPlay();
+        };
+        audio.onended = ()=>{
+            audio.remove();
+            if(currentAudio === audio) currentAudio = null;
+        };
+        audio.play().catch(e=>console.error(e));
+    };
+    tryPlay();
+}
+
+// ================= 听写练习逻辑 =================
+let shuffledList = [];
+let dictCur = 0;
+let cntRight = 0;
+let cntWrong = 0;
+let answerRecords = [];
+let waitingNext = false; // 判分后等待回车切题的标志
+
+const elIndex = document.querySelector('#dict-index');
+const elTotal = document.querySelector('#dict-total');
+const cntRightEl = document.querySelector('#cntRight');
+const cntWrongEl = document.querySelector('#cntWrong');
+const rateEl = document.querySelector('#rate');
+const userInput = document.querySelector('#userInput');
+const feedback = document.querySelector('#feedback');
+const answerTip = document.querySelector('#answerTip');
+const btnPlay = document.querySelector('#btnPlay');
+const btnShowAnswer = document.querySelector('#btnShowAnswer');
+const btnReset = document.querySelector('#btnReset');
+const btnExport = document.querySelector('#btnExport');
+const finalResultWrap = document.querySelector('#finalResultWrap');
+const resultListBox = document.querySelector('#resultListBox');
+const wordListBox = document.querySelector('#wordListBox');
+
+// Fisher-Yates 洗牌
+function shuffle(arr){
+    const copy = [...arr];
+    for(let i = copy.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [copy[i],copy[j]] = [copy[j],copy[i]];
+    }
+    return copy;
+}
+
+function updateStat(){
+    cntRightEl.innerText = cntRight;
+    cntWrongEl.innerText = cntWrong;
+    const totalDone = cntRight + cntWrong;
+    const rate = totalDone === 0 ? "0%" : Math.round((cntRight/totalDone)*100)+"%";
+    rateEl.innerText = rate;
+}
+
+// 全部完成后渲染对错清单
+function renderFinalList(){
+    finalResultWrap.style.display = 'block';
+    btnExport.disabled = false;
+    resultListBox.innerHTML = '';
+    answerRecords.forEach(rec=>{
+        const div = document.createElement('div');
+        if(rec.isOk){
+            div.className = 'item-correct';
+            div.innerText = `✅ ${rec.word.w} | ${rec.word.zh} | ${rec.word.tip}`;
+        }else{
+            div.className = 'item-wrong';
+            div.innerText = `❌ ${rec.word.w} | 你的输入:"${rec.userInput || '(空)'}" | ${rec.word.zh} | ${rec.word.tip}`;
+        }
+        resultListBox.appendChild(div);
+    });
+}
+
+// 导出Excel（SheetJS）
+function exportExcel(){
+    const data = [
+        ["序号","标准答案单词","中文释义","是否正确","用户输入","考点提示"]
+    ];
+    answerRecords.forEach((rec, idx)=>{
+        data.push([
+            idx+1,
+            rec.word.w,
+            rec.word.zh,
+            rec.isOk ? "正确" : "错误",
+            rec.userInput || "(空)",
+            rec.word.tip
+        ]);
+    });
+    // 汇总行
+    data.push([]);
+    data.push(["汇总",`总题:${shuffledList.length}`,`正确:${cntRight}`,`错误:${cntWrong}`,`正确率:${rateEl.innerText}`,""]);
+
+    const ws = XLSX.utils.aoa_to_sheet(data);
+    // 设置列宽，WPS/Excel可直接打开
+    ws['!cols'] = [
+        {wch:6},{wch:18},{wch:30},{wch:10},{wch:20},{wch:44}
+    ];
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "听写结果");
+    XLSX.writeFile(wb, "Chapter7(43-44)听写练习结果.xlsx");
+}
+
+// 渲染当前题目：清空输入与反馈，自动播放读音
+function renderDict(){
+    stopAudio();
+    userInput.value = "";
+    feedback.innerHTML = "";
+    answerTip.innerText = "";
+    waitingNext = false;
+    elTotal.innerText = shuffledList.length;
+
+    if(dictCur >= shuffledList.length){
+        feedback.innerHTML = `<div class="correct">✅练习全部结束！正确率：${rateEl.innerText}</div>`;
+        userInput.disabled = true; // 练习结束禁用输入框
+        renderFinalList();
+        return;
+    }
+    userInput.disabled = false;
+    elIndex.innerText = dictCur+1;
+    userInput.focus();
+    setTimeout(()=>{
+        playWordAudio(shuffledList[dictCur].w);
+    },200);
+}
+
+// 回车提交判分：对错都停留页面，再按回车才切题
+function checkAnswer(){
+    if(dictCur >= shuffledList.length) return;
+    const item = shuffledList[dictCur];
+    const correct = item.w.toLowerCase();
+    const inputVal = userInput.value.trim();
+    const inputLow = inputVal.toLowerCase();
+    const isOk = (inputLow === correct);
+
+    answerRecords.push({
+        word: item,
+        userInput: inputVal,
+        isOk: isOk
+    });
+
+    if(isOk){
+        cntRight++;
+        feedback.innerHTML = `<div class="correct">✔正确！${item.w} ${item.phonetic}｜${item.zh}</div>`;
+    }else{
+        cntWrong++;
+        feedback.innerHTML = `<div class="wrong">✘错误｜你输入：${inputVal || "(空)"}，标准答案：${item.w} ${item.phonetic}｜${item.zh}</div>`;
+    }
+    answerTip.innerText = "tip："+item.tip;
+    updateStat();
+    waitingNext = true; // 等待再次回车切题
+}
+
+function goNext(){
+    dictCur++;
+    renderDict();
+}
+
+// 重置：重新乱序，清空记录统计结果面板
+function initReset(){
+    shuffledList = shuffle(wordListRaw);
+    dictCur = 0;
+    cntRight = 0;
+    cntWrong = 0;
+    answerRecords = [];
+    waitingNext = false;
+    finalResultWrap.style.display = 'none';
+    btnExport.disabled = true;
+    updateStat();
+    renderDict();
+}
+
+// ================= 底部单词库列表（由wordListRaw动态渲染） =================
+function renderWordList(){
+    wordListBox.innerHTML = '';
+    wordListRaw.forEach(item=>{
+        const div = document.createElement('div');
+        div.className = 'word-item';
+        div.innerHTML = `
+            <div class="word-main">
+                <span class="en-word">${item.w}</span>
+                <span class="phonetic">${item.phonetic}</span>
+                <span class="cn-mean">${item.zh}</span>
+            </div>
+            <div class="tip-text">tip：${item.tip}</div>
+        `;
+        div.addEventListener('click', ()=>playWordAudio(item.w));
+        wordListBox.appendChild(div);
+    });
+}
+
+// ================= 事件绑定 =================
+btnPlay.onclick = ()=>{
+    if(dictCur < shuffledList.length){
+        playWordAudio(shuffledList[dictCur].w);
+    }
+};
+
+btnShowAnswer.onclick = ()=>{
+    if(dictCur >= shuffledList.length) return;
+    const item = shuffledList[dictCur];
+    feedback.innerHTML = `<div class="wrong">标准答案：${item.w} ${item.phonetic}｜${item.zh}</div>`;
+    answerTip.innerText = "tip："+item.tip;
+};
+
+btnReset.onclick = initReset;
+btnExport.onclick = exportExcel;
+
+userInput.addEventListener('keydown',e=>{
+    if(e.key === 'Enter'){
+        e.preventDefault();
+        if(!waitingNext){
+            checkAnswer();
+        }else{
+            goNext();
+        }
+    }
+});
+
+// ================= 初始化 =================
+renderWordList();
+initReset();
+</script>
+</body>
+</html>

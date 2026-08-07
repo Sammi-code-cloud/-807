@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>王陆807｜雅思听写练习｜章节导航</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        body {
+            background-color: #f3f4f6;
+            padding: 20px 12px;
+            line-height: 1.65;
+        }
+        .container {
+            max-width: 920px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 2px 14px rgba(0,0,0,0.08);
+            padding: 28px;
+        }
+        h1 {
+            font-size: 1.45rem;
+            margin-bottom: 20px;
+            color: #1f2937;
+        }
+        .summary-block {
+            background-color: #fffbe6;
+            border-left: 6px solid #facc15;
+            padding: 18px 20px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 28px;
+        }
+        /* 快速跳转选择区 */
+        .jump-panel {
+            background: #f0f7ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 24px;
+            border: 1px solid #b8d8ff;
+        }
+        .jump-panel h3 { margin-bottom: 14px; }
+        .jump-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        select {
+            padding: 10px 14px;
+            font-size: 1rem;
+            border: 1px solid #99c8ff;
+            border-radius: 8px;
+            background: #fff;
+            cursor: pointer;
+            min-width: 150px;
+        }
+        .btn-go {
+            padding: 10px 22px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            background: #1677ff;
+            color: white;
+        }
+        .btn-go:disabled { opacity: 0.5; cursor: not-allowed; }
+        /* 章节卡片列表 */
+        .chapter-list-title {
+            font-size: 1.1rem;
+            margin: 20px 0 12px;
+            color: #1f2937;
+        }
+        .chapter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 14px;
+        }
+        .chapter-card {
+            display: block;
+            text-decoration: none;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 16px 18px;
+            transition: all .15s;
+            background: #fff;
+        }
+        .chapter-card:hover {
+            background-color: #e6f4ff;
+            border-color: #91caff;
+            box-shadow: 0 2px 8px rgba(22,119,255,0.12);
+        }
+        .chapter-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1677ff;
+            margin-bottom: 4px;
+        }
+        .chapter-meta {
+            font-size: 0.88rem;
+            color: #666;
+        }
+        .empty-tip {
+            color: #999;
+            padding: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📖 王陆807｜雅思听写练习｜章节导航</h1>
+
+        <div class="summary-block">
+            <p><strong>使用说明：</strong>选择章节和页数后点击"开始听写"跳转到对应练习页面，也可以直接点击下方章节卡片进入。</p>
+            <p>每个章节页面支持：乱序听写、真人美音、错题记录、Excel导出。</p>
+        </div>
+
+        <div class="jump-panel">
+            <h3>🚀 快速跳转</h3>
+            <div class="jump-row">
+                <select id="selChapter">
+                    <option value="">选择章节...</option>
+                </select>
+                <select id="selPages" disabled>
+                    <option value="">选择页数...</option>
+                </select>
+                <button class="btn-go" id="btnGo" disabled>开始听写 →</button>
+            </div>
+        </div>
+
+        <h3 class="chapter-list-title">📚 全部章节</h3>
+        <div class="chapter-grid" id="chapterGrid"></div>
+        <div class="empty-tip" id="emptyTip" style="display:none;">暂无章节，请先生成章节页面并在 index.html 的 chapterList 数组中登记。</div>
+    </div>
+
+<script>
+// ================= 章节清单（每新增一章，在此追加一条记录） =================
+// 格式：{chapter: 章节号, pages: "起-止页", file: "html目录下的文件名", count: 单词数}
+const chapterList = [
+    {chapter: 7, pages: "43-44", file: "chapter7(43-44).html", count: 55},
+];
+
+// ================= 路由跳转逻辑 =================
+const selChapter = document.querySelector('#selChapter');
+const selPages = document.querySelector('#selPages');
+const btnGo = document.querySelector('#btnGo');
+const chapterGrid = document.querySelector('#chapterGrid');
+const emptyTip = document.querySelector('#emptyTip');
+
+// 跳转到章节页面（相对路径，GitHub Pages 与本地 http 服务均可用）
+function gotoChapter(file){
+    window.location.href = 'html/' + encodeURIComponent(file);
+}
+
+// 初始化章节下拉框（章节号去重排序）
+function initChapterSelect(){
+    const chapters = [...new Set(chapterList.map(c => c.chapter))].sort((a,b)=>a-b);
+    chapters.forEach(ch=>{
+        const opt = document.createElement('option');
+        opt.value = ch;
+        opt.innerText = `Chapter ${ch}`;
+        selChapter.appendChild(opt);
+    });
+}
+
+// 章节变化时联动页数下拉框
+selChapter.addEventListener('change', ()=>{
+    selPages.innerHTML = '<option value="">选择页数...</option>';
+    btnGo.disabled = true;
+    const ch = selChapter.value;
+    if(!ch){
+        selPages.disabled = true;
+        return;
+    }
+    const items = chapterList.filter(c => String(c.chapter) === ch);
+    items.forEach(item=>{
+        const opt = document.createElement('option');
+        opt.value = item.file;
+        opt.innerText = `第${item.pages}页（${item.count}词）`;
+        selPages.appendChild(opt);
+    });
+    selPages.disabled = false;
+    // 该章节只有一个页数区间时自动选中
+    if(items.length === 1){
+        selPages.selectedIndex = 1;
+        btnGo.disabled = false;
+    }
+});
+
+selPages.addEventListener('change', ()=>{
+    btnGo.disabled = !selPages.value;
+});
+
+btnGo.addEventListener('click', ()=>{
+    if(selPages.value) gotoChapter(selPages.value);
+});
+
+// 渲染章节卡片列表
+function renderChapterGrid(){
+    chapterGrid.innerHTML = '';
+    if(chapterList.length === 0){
+        emptyTip.style.display = 'block';
+        return;
+    }
+    // 按章节号、页数排序
+    const sorted = [...chapterList].sort((a,b)=>
+        a.chapter - b.chapter || a.pages.localeCompare(b.pages, undefined, {numeric:true})
+    );
+    sorted.forEach(item=>{
+        const a = document.createElement('a');
+        a.className = 'chapter-card';
+        a.href = 'html/' + encodeURIComponent(item.file);
+        a.innerHTML = `
+            <div class="chapter-name">Chapter ${item.chapter}</div>
+            <div class="chapter-meta">第 ${item.pages} 页 ｜ ${item.count} 词</div>
+        `;
+        chapterGrid.appendChild(a);
+    });
+}
+
+// ================= 初始化 =================
+initChapterSelect();
+renderChapterGrid();
+</script>
+</body>
+</html>
