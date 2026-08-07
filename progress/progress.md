@@ -7,7 +7,7 @@
 
 | 序号 | 章节 | 页数 | 单词数 | txt 文件 | 生成页面 | 路由登记 | 导入日期 |
 |---|---|---|---|---|---|---|---|
-| 1 | Chapter 7 | 43-44 | 55 | words\chapter7(43-44).txt | html\chapter7(43-44).html ✅ | ✅ | 2026-08-07 |
+| 1 | Chapter 7 | 43-44 | 55 | words\chapter7\chapter7(43-44).txt | html\chapter7(43-44).html ✅ | ✅ | 2026-08-07 |
 
 ## 状态说明
 
@@ -19,11 +19,14 @@
 
 > 计划导入但尚未处理的章节记录在这里，处理完成后移入上方总览表。
 
-（暂无）
+| 章节 | 页数 | txt 文件 | 状态 |
+|---|---|---|---|
+| Chapter 7 | 40 | words\chapter7\chapter7(40).txt | ⏳ txt 已就绪，待生成页面 |
+| Chapter 7 | 41-42 | words\chapter7\chapter7(41-42).txt | ⏳ txt 已就绪，待生成页面 |
 
 ## 新章节导入步骤（备忘）
 
-1. 在 `words\` 下新建 `chapter章节号(起始页-结束页).txt`，每行一个单词
+1. 在 `words\chapter章节号\` 文件夹下新建 `chapter章节号(起始页-结束页).txt`（章节文件夹不存在则先创建），每行一个单词
 2. 用 `prompt\提示词模板.md` 的提示词发给 AI，生成 html + 登记 chapterList
 3. 在本文件总览表中追加一行记录
 4. `git push` 后刷新 GitHub Pages 即可练习

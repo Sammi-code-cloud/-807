@@ -30,8 +30,11 @@ english\
 ├── index.html          # 章节路由导航页（首页），chapterList 数组登记全部章节
 ├── html\               # 各章节听写练习页面（单词数据已内嵌，在线访问只依赖此目录）
 │   └── chapter7(43-44).html
-├── words\              # 各章节单词原始数据（txt，每行一个单词）
-│   └── chapter7(43-44).txt
+├── words\              # 各章节单词原始数据，按章节分文件夹（txt，每行一个单词）
+│   └── chapter7\
+│       ├── chapter7(40).txt
+│       ├── chapter7(41-42).txt
+│       └── chapter7(43-44).txt
 ├── progress\           # 导入进度记录
 │   └── progress.md     # 进度表：已导入章节、生成页面、路由登记状态
 ├── prompt\             # AI 生成提示词模板
@@ -59,7 +62,7 @@ english\
 
 ## 新增章节流程
 
-1. 在 `words\` 下新建 txt 文件，命名格式 `chapter章节号(起始页-结束页).txt`（如 `chapter8(45-46).txt`），每行填一个单词
+1. 在 `words\chapter章节号\` 文件夹下新建 txt 文件（如 `words\chapter8\chapter8(45-46).txt`，章节文件夹不存在则先创建），每行填一个单词
 2. 打开 `prompt\提示词模板.md`，复制提示词正文，替换 `{章节文件名}` 后发给 AI
 3. AI 会完成三件事：
    - 在 `html\` 下生成同名听写页面（自动补全音标、中文释义、考点提示）
