@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>王陆807｜Chapter7(40)｜乱序听写 错题记录+Excel导出</title>
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -351,61 +351,71 @@ function renderFinalList(){
     });
 }
 
-// 导出Excel（SheetJS）：随时可导出，未作答单词一并导出并标"未作答"
+// 导出Excel（xlsx-js-style，带样式）：随时可导出；未作答行判分为公式，导出后补填"你的答案"可自动判分
 function exportExcel(){
-    const data = [
+    // ---- 样式定义（对齐参考表：蓝底表头/单词蓝色加粗/音标灰/tip红/细边框） ----
+    const thin = {style:"thin", color:{rgb:"CCCCCC"}};
+    const border = {top:thin, bottom:thin, left:thin, right:thin};
+    const stTitle  = {font:{bold:true, sz:14, color:{rgb:"1F2937"}}, alignment:{horizontal:"center", vertical:"center"}};
+    const stHeader = {font:{bold:true, color:{rgb:"FFFFFF"}}, fill:{fgColor:{rgb:"1677FF"}}, alignment:{horizontal:"center", vertical:"center", wrapText:true}, border};
+    const stBase   = {alignment:{vertical:"center", wrapText:true}, border};
+    const stCenter = {alignment:{horizontal:"center", vertical:"center"}, border};
+    const stWord   = {...stBase, font:{bold:true, color:{rgb:"1677FF"}}};
+    const stPhon   = {...stBase, font:{color:{rgb:"555555"}, sz:10}};
+    const stTip    = {...stBase, font:{color:{rgb:"CF1322"}, sz:10}};
+    const stRight  = {...stCenter, font:{bold:true, color:{rgb:"009944"}}};
+    const stWrong  = {...stCenter, font:{bold:true, color:{rgb:"D32F2F"}}};
+    const stAudio  = {...stCenter, font:{color:{rgb:"1677FF"}, underline:true}};
+    const stSum    = {...stBase, font:{bold:true}};
+
+    // ---- 组装行数据：已作答在前（按作答顺序），未作答按词表顺序附后 ----
+    const rows = [];
+    answerRecords.forEach(rec=>rows.push({item:rec.word, userInput:rec.userInput||"(空)", state:rec.isOk?"right":"wrong"}));
+    const answeredSet = new Set(answerRecords.map(rec=>rec.word));
+    wordListRaw.forEach(item=>{ if(!answeredSet.has(item)) rows.push({item, userInput:"", state:"todo"}); });
+
+    const aoa = [
+        ["词汇精讲｜第40页 第七章｜听写练习表"],
         ["序号","标准答案","音标","中文释义","考点提示","你的答案","判分","🔊发音","页数"]
     ];
-    const audioLinks = []; // 记录每行发音超链接，行号与data对应
-    // 已作答记录（按作答顺序）
-    answerRecords.forEach(rec=>{
-        data.push([
-            data.length,
-            rec.word.w,
-            rec.word.phonetic,
-            rec.word.zh,
-            rec.word.tip,
-            rec.userInput || "(空)",
-            rec.isOk ? "✅正确" : "❌错误",
-            "▶ 播放",
-            rec.word.page
-        ]);
-        audioLinks.push({row: data.length-1, url: audioUrl(rec.word.w.toLowerCase(),1)});
+    rows.forEach((r,i)=>{
+        aoa.push([i+1, r.item.w, r.item.phonetic, r.item.zh, r.item.tip, r.userInput, "", "▶ 播放", r.item.page]);
     });
-    // 未作答单词（按词表顺序附后，判分标"未作答"）
-    const answeredSet = new Set(answerRecords.map(rec=>rec.word));
-    wordListRaw.forEach(item=>{
-        if(answeredSet.has(item)) return;
-        data.push([
-            data.length,
-            item.w,
-            item.phonetic,
-            item.zh,
-            item.tip,
-            "",
-            "未作答",
-            "▶ 播放",
-            item.page
-        ]);
-        audioLinks.push({row: data.length-1, url: audioUrl(item.w.toLowerCase(),1)});
-    });
-    // 汇总行
-    const unDone = wordListRaw.length - answerRecords.length;
-    data.push([]);
-    data.push(["汇总",`总词:${wordListRaw.length}`,`已答:${answerRecords.length}`,`正确:${cntRight}`,`错误:${cntWrong}`,`未答:${unDone}`,`正确率:${rateEl.innerText}`,"",""]);
+    const unDone = rows.length - answerRecords.length;
+    aoa.push([]);
+    aoa.push(["汇总",`总词:${wordListRaw.length}`,`已答:${answerRecords.length}`,`正确:${cntRight}`,`错误:${cntWrong}`,`未答:${unDone}`,`正确率:${rateEl.innerText}`,"",""]);
 
-    const ws = XLSX.utils.aoa_to_sheet(data);
-    // 发音列写入mp3超链接，Excel/WPS中可点击播放
-    audioLinks.forEach(lk=>{
-        const ref = XLSX.utils.encode_cell({r: lk.row, c: 7});
-        if(ws[ref]) ws[ref].l = {Target: lk.url, Tooltip: "点击播放美音mp3"};
+    const ws = XLSX.utils.aoa_to_sheet(aoa);
+    ws["!merges"] = [{s:{r:0,c:0}, e:{r:0,c:8}}];          // 标题合并 A1:I1
+    ws["!cols"] = [{wch:6},{wch:16},{wch:22},{wch:28},{wch:36},{wch:18},{wch:12},{wch:10},{wch:8}];
+    ws["!rows"] = [{hpt:32},{hpt:28},...rows.map(()=>({hpt:24}))]; // 标题/表头/数据行高
+
+    ws["A1"].s = stTitle;
+    ["A2","B2","C2","D2","E2","F2","G2","H2","I2"].forEach(ref=>{ if(ws[ref]) ws[ref].s = stHeader; });
+
+    rows.forEach((r,i)=>{
+        const rn = i+3; // 数据从第3行开始
+        const set = (col,st)=>{ const c = ws[col+rn]; if(c) c.s = st; };
+        set("A",stCenter); set("B",stWord); set("C",stPhon); set("D",stBase); set("E",stTip); set("F",stBase); set("I",stCenter);
+        // 判分列
+        const g = ws["G"+rn];
+        if(r.state === "right"){ g.v = "✅正确"; g.s = stRight; }
+        else if(r.state === "wrong"){ g.v = "❌错误"; g.s = stWrong; }
+        else { // 未作答：写判分公式，Excel中补填F列即自动判分
+            g.f = `IF(F${rn}="","",IF(LOWER(F${rn})=LOWER(B${rn}),"✅正确","❌错误"))`;
+            g.s = stCenter;
+        }
+        // 发音列：mp3超链接
+        const h = ws["H"+rn];
+        h.l = {Target: audioUrl(r.item.w.toLowerCase(),1), Tooltip:"点击播放美音mp3"};
+        h.s = stAudio;
     });
-    // 设置列宽，WPS/Excel可直接打开
-    ws['!cols'] = [
-        {wch:6},{wch:16},{wch:22},{wch:28},{wch:44},{wch:18},{wch:12},{wch:10},{wch:8}
-    ];
+    // 汇总行样式
+    const sumRn = rows.length + 4;
+    ["A","B","C","D","E","F","G","H","I"].forEach(col=>{ const c = ws[col+sumRn]; if(c) c.s = stSum; });
+
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "听写结果");
+    XLSX.utils.book_append_sheet(wb, ws, "单词听写练习");
     XLSX.writeFile(wb, "Chapter7(40)听写练习结果.xlsx");
 }
 
