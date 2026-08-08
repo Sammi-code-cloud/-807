@@ -8,7 +8,7 @@
 | 序号 | 章节 | 页数 | 单词数 | txt 文件 | 生成页面 | 路由登记 | 导入日期 |
 |---|---|---|---|---|---|---|---|
 | 1 | Chapter 7 | 40 | 22 | words\chapter7\chapter7(40).txt | html\chapter7(40).html ✅ | ✅ | 2026-08-07 |
-| 2 | Chapter 7 | 41-42 | 55 | words\chapter7\chapter7(41-42).txt | html\chapter7(41-42).html ✅ | ✅ | 2026-08-07 |
+| 2 | Chapter 7 | 41-42 | 56 | words\chapter7\chapter7(41-42).txt | html\chapter7(41-42).html ✅ | ✅ | 2026-08-07（08-08补词remain） |
 | 3 | Chapter 7 | 43-44 | 55 | words\chapter7\chapter7(43-44).txt | html\chapter7(43-44).html ✅ | ✅ | 2026-08-07 |
 
 ## 状态说明

@@ -187,7 +187,7 @@
                 <li>④易混词：pause≠pose、warning≠warming、angle≠angel、tail≠tale、retail↔wholesale</li>
                 <li>⑤词性派生：product→production、concentrate→concentrated</li>
             </ul>
-            <p><strong>操作说明：</strong>听读音后输入单词，按回车提交判分；答错不跳题，错误信息停留页面，再按一次回车才进入下一题；答对同样需回车切题。全部完成后展示对错清单，可导出Excel。</p>
+            <p><strong>操作说明：</strong>听读音后输入单词，按回车提交判分；答错不跳题，错误信息停留页面，再按一次回车才进入下一题；答对同样需回车切题。随时可点击"导出Excel"（未作答单词标"未作答"）；全部完成后展示对错清单。</p>
         </div>
 
         <div class="dictation-panel">
@@ -205,7 +205,7 @@
                 <button class="btn-play" id="btnPlay">🔊重听当前</button>
                 <button class="btn-show" id="btnShowAnswer">👁显示标准答案</button>
                 <button class="btn-reset" id="btnReset">🔄重置&重新乱序</button>
-                <button class="btn-export" id="btnExport" disabled>📥导出Excel</button>
+                <button class="btn-export" id="btnExport">📥导出Excel</button>
             </div>
         </div>
 
@@ -222,61 +222,61 @@
 // ================= 单词数据源（Chapter7 第43-44页，共55词） =================
 // 每项格式：{"w":"单词","phonetic":"音标","zh":"中文释义","tip":"考试提示"}
 const wordListRaw = [
-    {w:"ditch",phonetic:"[dɪtʃ]",zh:"n. 沟渠 v. 丢弃",tip:"农业灌溉、乡村场景填空"},
-    {w:"funnel",phonetic:"[ˈfʌnl]",zh:"n. 漏斗；烟囱",tip:"⚠️双n，实验器材场景高频"},
-    {w:"symbol",phonetic:"[ˈsɪmbl]",zh:"n. 符号，象征",tip:"⚠️别拼成symble，文化历史话题"},
-    {w:"motivation",phonetic:"[ˌməʊtɪˈveɪʃn]",zh:"n. 动机，积极性",tip:"心理学、教育话题高频"},
-    {w:"reaction",phonetic:"[riˈækʃn]",zh:"n. 反应",tip:"化学实验、心理话题"},
-    {w:"archive",phonetic:"[ˈɑːkaɪv]",zh:"n. 档案（馆） v. 存档",tip:"⚠️ch发/k/音，图书馆场景"},
-    {w:"quick",phonetic:"[kwɪk]",zh:"adj. 快的，迅速的",tip:"基础词，注意ck结尾"},
-    {w:"absence",phonetic:"[ˈæbsəns]",zh:"n. 缺席，缺乏",tip:"⚠️结尾ence不是ance"},
-    {w:"calculator",phonetic:"[ˈkælkjuleɪtə(r)]",zh:"n. 计算器",tip:"⚠️结尾or不是er，S1物品场景"},
-    {w:"box",phonetic:"[bɒks]",zh:"n. 盒子，箱子",tip:"基础词，S1物品清单场景"},
-    {w:"request",phonetic:"[rɪˈkwest]",zh:"n./v. 请求，要求",tip:"S1咨询预订场景"},
-    {w:"heart",phonetic:"[hɑːt]",zh:"n. 心脏，核心",tip:"健康医疗话题，注意ear组合"},
-    {w:"low-risk",phonetic:"[ˌləʊ ˈrɪsk]",zh:"adj. 低风险的",tip:"⚠️连字符复合词，投资/健康话题"},
-    {w:"apology",phonetic:"[əˈpɒlədʒi]",zh:"n. 道歉",tip:"⚠️名词结尾gy，区分动词apologize"},
-    {w:"entire",phonetic:"[ɪnˈtaɪə(r)]",zh:"adj. 整个的，全部的",tip:"注意en开头不是in"},
-    {w:"characteristics",phonetic:"[ˌkærəktəˈrɪstɪks]",zh:"n. 特征，特点（复数）",tip:"⚠️长词高频，录音常读复数，别漏s"},
-    {w:"cabin",phonetic:"[ˈkæbɪn]",zh:"n. 小木屋，客舱",tip:"⚠️单b，度假住宿场景"},
-    {w:"sustainable",phonetic:"[səˈsteɪnəbl]",zh:"adj. 可持续的",tip:"环保话题S4高频，注意able结尾"},
-    {w:"fight",phonetic:"[faɪt]",zh:"n./v. 斗争，搏斗",tip:"gh不发音，区分flight"},
-    {w:"downhill",phonetic:"[ˌdaʊnˈhɪl]",zh:"adv./adj. 下坡（的）",tip:"⚠️双l，滑雪骑行运动场景"},
-    {w:"gear",phonetic:"[ɡɪə(r)]",zh:"n. 齿轮；装备",tip:"户外运动装备场景高频"},
-    {w:"pause",phonetic:"[pɔːz]",zh:"n./v. 暂停，停顿",tip:"⚠️区分pose(姿势)，au组合"},
-    {w:"concrete",phonetic:"[ˈkɒŋkriːt]",zh:"n. 混凝土 adj. 具体的",tip:"建筑材料话题S4高频"},
-    {w:"chemical",phonetic:"[ˈkemɪkl]",zh:"n. 化学品 adj. 化学的",tip:"⚠️ch发/k/音，实验环保话题"},
-    {w:"chemicals",phonetic:"[ˈkemɪklz]",zh:"n. 化学品（复数）",tip:"⚠️复数考点，录音读/z/尾音别漏s"},
-    {w:"crowded",phonetic:"[ˈkraʊdɪd]",zh:"adj. 拥挤的",tip:"城市交通话题，注意ed结尾"},
-    {w:"stroke",phonetic:"[strəʊk]",zh:"n. 中风；划水；笔画",tip:"医疗健康、游泳场景多义词"},
-    {w:"nightmare",phonetic:"[ˈnaɪtmeə(r)]",zh:"n. 噩梦",tip:"⚠️结尾mare，睡眠心理话题"},
-    {w:"retail",phonetic:"[ˈriːteɪl]",zh:"n. 零售",tip:"商业话题，对比wholesale批发"},
-    {w:"wholesale",phonetic:"[ˈhəʊlseɪl]",zh:"n. 批发",tip:"⚠️wh开头别漏w，商业话题"},
-    {w:"angle",phonetic:"[ˈæŋɡl]",zh:"n. 角度",tip:"⚠️区分angel(天使)，几何实验场景"},
-    {w:"angles",phonetic:"[ˈæŋɡlz]",zh:"n. 角度（复数）",tip:"⚠️复数考点，别漏s"},
-    {w:"mission",phonetic:"[ˈmɪʃn]",zh:"n. 任务，使命",tip:"⚠️双s，科研航天话题"},
-    {w:"comprehension",phonetic:"[ˌkɒmprɪˈhenʃn]",zh:"n. 理解（力）",tip:"长词，教育语言学习话题"},
-    {w:"port",phonetic:"[pɔːt]",zh:"n. 港口",tip:"地理交通场景，区分pot"},
-    {w:"leg",phonetic:"[leɡ]",zh:"n. 腿；（赛程的）一段",tip:"旅程分段场景考多义"},
-    {w:"aisle",phonetic:"[aɪl]",zh:"n. 过道，通道",tip:"⚠️s不发音，超市飞机场景，别拼成isle"},
-    {w:"highway",phonetic:"[ˈhaɪweɪ]",zh:"n. 公路，高速路",tip:"交通场景，gh不发音"},
-    {w:"digestion",phonetic:"[daɪˈdʒestʃən]",zh:"n. 消化",tip:"生物健康话题S4"},
-    {w:"target",phonetic:"[ˈtɑːɡɪt]",zh:"n. 目标，靶子",tip:"⚠️结尾get，商业科研话题"},
-    {w:"job",phonetic:"[dʒɒb]",zh:"n. 工作，职位",tip:"S1求职场景基础词"},
-    {w:"erosion",phonetic:"[ɪˈrəʊʒn]",zh:"n. 侵蚀，腐蚀",tip:"⚠️地理S4高频，海岸土壤话题"},
-    {w:"stem",phonetic:"[stem]",zh:"n. 茎，干",tip:"植物学话题，区分steam"},
-    {w:"drought",phonetic:"[draʊt]",zh:"n. 干旱",tip:"⚠️gh不发音，拼写大坑，气候话题"},
-    {w:"gravity",phonetic:"[ˈɡrævəti]",zh:"n. 重力，引力",tip:"物理讲座S4，注意vity结尾"},
-    {w:"container",phonetic:"[kənˈteɪnə(r)]",zh:"n. 容器，集装箱",tip:"结尾er，物流实验场景"},
-    {w:"lid",phonetic:"[lɪd]",zh:"n. 盖子",tip:"实验器材场景，短词别听漏"},
-    {w:"warning",phonetic:"[ˈwɔːnɪŋ]",zh:"n. 警告，预警",tip:"⚠️区分warming(变暖)，只有一个r后无a"},
-    {w:"random",phonetic:"[ˈrændəm]",zh:"adj. 随机的",tip:"⚠️结尾dom，实验方法场景"},
-    {w:"product",phonetic:"[ˈprɒdʌkt]",zh:"n. 产品",tip:"商业话题，区分produce"},
-    {w:"production",phonetic:"[prəˈdʌkʃn]",zh:"n. 生产，制造",tip:"⚠️派生词考点，工厂话题"},
-    {w:"concentrate",phonetic:"[ˈkɒnsntreɪt]",zh:"v. 集中；浓缩",tip:"学习方法、化学话题"},
-    {w:"concentrated",phonetic:"[ˈkɒnsntreɪtɪd]",zh:"adj. 浓缩的，集中的",tip:"⚠️ed结尾别漏，果汁化学场景"},
-    {w:"basin",phonetic:"[ˈbeɪsn]",zh:"n. 盆地；水盆",tip:"⚠️地理S4高频，结尾sin"},
-    {w:"tail",phonetic:"[teɪl]",zh:"n. 尾巴，尾部",tip:"⚠️区分tale(故事)，动物话题"},
+    {w:"ditch",phonetic:"[dɪtʃ]",zh:"n. 沟渠 v. 丢弃",tip:"农业灌溉、乡村场景填空",page:"43-44"},
+    {w:"funnel",phonetic:"[ˈfʌnl]",zh:"n. 漏斗；烟囱",tip:"⚠️双n，实验器材场景高频",page:"43-44"},
+    {w:"symbol",phonetic:"[ˈsɪmbl]",zh:"n. 符号，象征",tip:"⚠️别拼成symble，文化历史话题",page:"43-44"},
+    {w:"motivation",phonetic:"[ˌməʊtɪˈveɪʃn]",zh:"n. 动机，积极性",tip:"心理学、教育话题高频",page:"43-44"},
+    {w:"reaction",phonetic:"[riˈækʃn]",zh:"n. 反应",tip:"化学实验、心理话题",page:"43-44"},
+    {w:"archive",phonetic:"[ˈɑːkaɪv]",zh:"n. 档案（馆） v. 存档",tip:"⚠️ch发/k/音，图书馆场景",page:"43-44"},
+    {w:"quick",phonetic:"[kwɪk]",zh:"adj. 快的，迅速的",tip:"基础词，注意ck结尾",page:"43-44"},
+    {w:"absence",phonetic:"[ˈæbsəns]",zh:"n. 缺席，缺乏",tip:"⚠️结尾ence不是ance",page:"43-44"},
+    {w:"calculator",phonetic:"[ˈkælkjuleɪtə(r)]",zh:"n. 计算器",tip:"⚠️结尾or不是er，S1物品场景",page:"43-44"},
+    {w:"box",phonetic:"[bɒks]",zh:"n. 盒子，箱子",tip:"基础词，S1物品清单场景",page:"43-44"},
+    {w:"request",phonetic:"[rɪˈkwest]",zh:"n./v. 请求，要求",tip:"S1咨询预订场景",page:"43-44"},
+    {w:"heart",phonetic:"[hɑːt]",zh:"n. 心脏，核心",tip:"健康医疗话题，注意ear组合",page:"43-44"},
+    {w:"low-risk",phonetic:"[ˌləʊ ˈrɪsk]",zh:"adj. 低风险的",tip:"⚠️连字符复合词，投资/健康话题",page:"43-44"},
+    {w:"apology",phonetic:"[əˈpɒlədʒi]",zh:"n. 道歉",tip:"⚠️名词结尾gy，区分动词apologize",page:"43-44"},
+    {w:"entire",phonetic:"[ɪnˈtaɪə(r)]",zh:"adj. 整个的，全部的",tip:"注意en开头不是in",page:"43-44"},
+    {w:"characteristics",phonetic:"[ˌkærəktəˈrɪstɪks]",zh:"n. 特征，特点（复数）",tip:"⚠️长词高频，录音常读复数，别漏s",page:"43-44"},
+    {w:"cabin",phonetic:"[ˈkæbɪn]",zh:"n. 小木屋，客舱",tip:"⚠️单b，度假住宿场景",page:"43-44"},
+    {w:"sustainable",phonetic:"[səˈsteɪnəbl]",zh:"adj. 可持续的",tip:"环保话题S4高频，注意able结尾",page:"43-44"},
+    {w:"fight",phonetic:"[faɪt]",zh:"n./v. 斗争，搏斗",tip:"gh不发音，区分flight",page:"43-44"},
+    {w:"downhill",phonetic:"[ˌdaʊnˈhɪl]",zh:"adv./adj. 下坡（的）",tip:"⚠️双l，滑雪骑行运动场景",page:"43-44"},
+    {w:"gear",phonetic:"[ɡɪə(r)]",zh:"n. 齿轮；装备",tip:"户外运动装备场景高频",page:"43-44"},
+    {w:"pause",phonetic:"[pɔːz]",zh:"n./v. 暂停，停顿",tip:"⚠️区分pose(姿势)，au组合",page:"43-44"},
+    {w:"concrete",phonetic:"[ˈkɒŋkriːt]",zh:"n. 混凝土 adj. 具体的",tip:"建筑材料话题S4高频",page:"43-44"},
+    {w:"chemical",phonetic:"[ˈkemɪkl]",zh:"n. 化学品 adj. 化学的",tip:"⚠️ch发/k/音，实验环保话题",page:"43-44"},
+    {w:"chemicals",phonetic:"[ˈkemɪklz]",zh:"n. 化学品（复数）",tip:"⚠️复数考点，录音读/z/尾音别漏s",page:"43-44"},
+    {w:"crowded",phonetic:"[ˈkraʊdɪd]",zh:"adj. 拥挤的",tip:"城市交通话题，注意ed结尾",page:"43-44"},
+    {w:"stroke",phonetic:"[strəʊk]",zh:"n. 中风；划水；笔画",tip:"医疗健康、游泳场景多义词",page:"43-44"},
+    {w:"nightmare",phonetic:"[ˈnaɪtmeə(r)]",zh:"n. 噩梦",tip:"⚠️结尾mare，睡眠心理话题",page:"43-44"},
+    {w:"retail",phonetic:"[ˈriːteɪl]",zh:"n. 零售",tip:"商业话题，对比wholesale批发",page:"43-44"},
+    {w:"wholesale",phonetic:"[ˈhəʊlseɪl]",zh:"n. 批发",tip:"⚠️wh开头别漏w，商业话题",page:"43-44"},
+    {w:"angle",phonetic:"[ˈæŋɡl]",zh:"n. 角度",tip:"⚠️区分angel(天使)，几何实验场景",page:"43-44"},
+    {w:"angles",phonetic:"[ˈæŋɡlz]",zh:"n. 角度（复数）",tip:"⚠️复数考点，别漏s",page:"43-44"},
+    {w:"mission",phonetic:"[ˈmɪʃn]",zh:"n. 任务，使命",tip:"⚠️双s，科研航天话题",page:"43-44"},
+    {w:"comprehension",phonetic:"[ˌkɒmprɪˈhenʃn]",zh:"n. 理解（力）",tip:"长词，教育语言学习话题",page:"43-44"},
+    {w:"port",phonetic:"[pɔːt]",zh:"n. 港口",tip:"地理交通场景，区分pot",page:"43-44"},
+    {w:"leg",phonetic:"[leɡ]",zh:"n. 腿；（赛程的）一段",tip:"旅程分段场景考多义",page:"43-44"},
+    {w:"aisle",phonetic:"[aɪl]",zh:"n. 过道，通道",tip:"⚠️s不发音，超市飞机场景，别拼成isle",page:"43-44"},
+    {w:"highway",phonetic:"[ˈhaɪweɪ]",zh:"n. 公路，高速路",tip:"交通场景，gh不发音",page:"43-44"},
+    {w:"digestion",phonetic:"[daɪˈdʒestʃən]",zh:"n. 消化",tip:"生物健康话题S4",page:"43-44"},
+    {w:"target",phonetic:"[ˈtɑːɡɪt]",zh:"n. 目标，靶子",tip:"⚠️结尾get，商业科研话题",page:"43-44"},
+    {w:"job",phonetic:"[dʒɒb]",zh:"n. 工作，职位",tip:"S1求职场景基础词",page:"43-44"},
+    {w:"erosion",phonetic:"[ɪˈrəʊʒn]",zh:"n. 侵蚀，腐蚀",tip:"⚠️地理S4高频，海岸土壤话题",page:"43-44"},
+    {w:"stem",phonetic:"[stem]",zh:"n. 茎，干",tip:"植物学话题，区分steam",page:"43-44"},
+    {w:"drought",phonetic:"[draʊt]",zh:"n. 干旱",tip:"⚠️gh不发音，拼写大坑，气候话题",page:"43-44"},
+    {w:"gravity",phonetic:"[ˈɡrævəti]",zh:"n. 重力，引力",tip:"物理讲座S4，注意vity结尾",page:"43-44"},
+    {w:"container",phonetic:"[kənˈteɪnə(r)]",zh:"n. 容器，集装箱",tip:"结尾er，物流实验场景",page:"43-44"},
+    {w:"lid",phonetic:"[lɪd]",zh:"n. 盖子",tip:"实验器材场景，短词别听漏",page:"43-44"},
+    {w:"warning",phonetic:"[ˈwɔːnɪŋ]",zh:"n. 警告，预警",tip:"⚠️区分warming(变暖)，只有一个r后无a",page:"43-44"},
+    {w:"random",phonetic:"[ˈrændəm]",zh:"adj. 随机的",tip:"⚠️结尾dom，实验方法场景",page:"43-44"},
+    {w:"product",phonetic:"[ˈprɒdʌkt]",zh:"n. 产品",tip:"商业话题，区分produce",page:"43-44"},
+    {w:"production",phonetic:"[prəˈdʌkʃn]",zh:"n. 生产，制造",tip:"⚠️派生词考点，工厂话题",page:"43-44"},
+    {w:"concentrate",phonetic:"[ˈkɒnsntreɪt]",zh:"v. 集中；浓缩",tip:"学习方法、化学话题",page:"43-44"},
+    {w:"concentrated",phonetic:"[ˈkɒnsntreɪtɪd]",zh:"adj. 浓缩的，集中的",tip:"⚠️ed结尾别漏，果汁化学场景",page:"43-44"},
+    {w:"basin",phonetic:"[ˈbeɪsn]",zh:"n. 盆地；水盆",tip:"⚠️地理S4高频，结尾sin",page:"43-44"},
+    {w:"tail",phonetic:"[teɪl]",zh:"n. 尾巴，尾部",tip:"⚠️区分tale(故事)，动物话题",page:"43-44"},
 ];
 
 // ================= 音频播放（谷歌词典牛津真人美音，禁止TTS） =================
@@ -370,7 +370,6 @@ function updateStat(){
 // 全部完成后渲染对错清单
 function renderFinalList(){
     finalResultWrap.style.display = 'block';
-    btnExport.disabled = false;
     resultListBox.innerHTML = '';
     answerRecords.forEach(rec=>{
         const div = document.createElement('div');
@@ -385,29 +384,58 @@ function renderFinalList(){
     });
 }
 
-// 导出Excel（SheetJS）
+// 导出Excel（SheetJS）：随时可导出，未作答单词一并导出并标"未作答"
 function exportExcel(){
     const data = [
-        ["序号","标准答案单词","中文释义","是否正确","用户输入","考点提示"]
+        ["序号","标准答案","音标","中文释义","考点提示","你的答案","判分","🔊发音","页数"]
     ];
-    answerRecords.forEach((rec, idx)=>{
+    const audioLinks = []; // 记录每行发音超链接，行号与data对应
+    // 已作答记录（按作答顺序）
+    answerRecords.forEach(rec=>{
         data.push([
-            idx+1,
+            data.length,
             rec.word.w,
+            rec.word.phonetic,
             rec.word.zh,
-            rec.isOk ? "正确" : "错误",
+            rec.word.tip,
             rec.userInput || "(空)",
-            rec.word.tip
+            rec.isOk ? "✅正确" : "❌错误",
+            "▶ 播放",
+            rec.word.page
         ]);
+        audioLinks.push({row: data.length-1, url: audioUrl(rec.word.w.toLowerCase(),1)});
+    });
+    // 未作答单词（按词表顺序附后，判分标"未作答"）
+    const answeredSet = new Set(answerRecords.map(rec=>rec.word));
+    wordListRaw.forEach(item=>{
+        if(answeredSet.has(item)) return;
+        data.push([
+            data.length,
+            item.w,
+            item.phonetic,
+            item.zh,
+            item.tip,
+            "",
+            "未作答",
+            "▶ 播放",
+            item.page
+        ]);
+        audioLinks.push({row: data.length-1, url: audioUrl(item.w.toLowerCase(),1)});
     });
     // 汇总行
+    const unDone = wordListRaw.length - answerRecords.length;
     data.push([]);
-    data.push(["汇总",`总题:${shuffledList.length}`,`正确:${cntRight}`,`错误:${cntWrong}`,`正确率:${rateEl.innerText}`,""]);
+    data.push(["汇总",`总词:${wordListRaw.length}`,`已答:${answerRecords.length}`,`正确:${cntRight}`,`错误:${cntWrong}`,`未答:${unDone}`,`正确率:${rateEl.innerText}`,"",""]);
 
     const ws = XLSX.utils.aoa_to_sheet(data);
+    // 发音列写入mp3超链接，Excel/WPS中可点击播放
+    audioLinks.forEach(lk=>{
+        const ref = XLSX.utils.encode_cell({r: lk.row, c: 7});
+        if(ws[ref]) ws[ref].l = {Target: lk.url, Tooltip: "点击播放美音mp3"};
+    });
     // 设置列宽，WPS/Excel可直接打开
     ws['!cols'] = [
-        {wch:6},{wch:18},{wch:30},{wch:10},{wch:20},{wch:44}
+        {wch:6},{wch:16},{wch:22},{wch:28},{wch:44},{wch:18},{wch:12},{wch:10},{wch:8}
     ];
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "听写结果");
@@ -478,7 +506,6 @@ function initReset(){
     answerRecords = [];
     waitingNext = false;
     finalResultWrap.style.display = 'none';
-    btnExport.disabled = true;
     updateStat();
     renderDict();
 }

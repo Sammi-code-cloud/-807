@@ -187,7 +187,7 @@
                 <li>④易混词：reward≠award、tolerant(adj.)↔tolerance(n.)</li>
                 <li>⑤长难拼写：monument、democratic、expertise</li>
             </ul>
-            <p><strong>操作说明：</strong>听读音后输入单词，按回车提交判分；答错不跳题，错误信息停留页面，再按一次回车才进入下一题；答对同样需回车切题。全部完成后展示对错清单，可导出Excel。</p>
+            <p><strong>操作说明：</strong>听读音后输入单词，按回车提交判分；答错不跳题，错误信息停留页面，再按一次回车才进入下一题；答对同样需回车切题。随时可点击"导出Excel"（未作答单词标"未作答"）；全部完成后展示对错清单。</p>
         </div>
 
         <div class="dictation-panel">
@@ -205,7 +205,7 @@
                 <button class="btn-play" id="btnPlay">🔊重听当前</button>
                 <button class="btn-show" id="btnShowAnswer">👁显示标准答案</button>
                 <button class="btn-reset" id="btnReset">🔄重置&重新乱序</button>
-                <button class="btn-export" id="btnExport" disabled>📥导出Excel</button>
+                <button class="btn-export" id="btnExport">📥导出Excel</button>
             </div>
         </div>
 
@@ -222,28 +222,28 @@
 // ================= 单词数据源（Chapter7 第40页，共22词） =================
 // 每项格式：{"w":"单词","phonetic":"音标","zh":"中文释义","tip":"考试提示"}
 const wordListRaw = [
-    {w:"structure",phonetic:"[ˈstrʌktʃə(r)]",zh:"n. 结构",tip:"S4讲座高频，建筑/生物话题；注意后缀-ture"},
-    {w:"openness",phonetic:"[ˈəʊpənnəs]",zh:"n. 开放",tip:"⚠️双n，听写非常容易少写一个n"},
-    {w:"reflective",phonetic:"[rɪˈflektɪv]",zh:"adj. 反思的，反射的，反映的",tip:"心理学、建筑话题"},
-    {w:"rag",phonetic:"[ræɡ]",zh:"n. 破布（复数rags）",tip:"手工清洁场景，注意复数rags"},
-    {w:"direction",phonetic:"[dəˈrekʃn]",zh:"n. 方向",tip:"方位、实验操作场景"},
-    {w:"monument",phonetic:"[ˈmɒnjumənt]",zh:"n. 纪念碑",tip:"历史城市介绍，长单词注意拼写"},
-    {w:"respect",phonetic:"[rɪˈspekt]",zh:"v./n. 尊敬，尊重",tip:"人文社会话题"},
-    {w:"boiler",phonetic:"[ˈbɔɪlə(r)]",zh:"n. 锅炉",tip:"S1租房维修场景填空"},
-    {w:"instinct",phonetic:"[ˈɪnstɪŋkt]",zh:"n. 本能",tip:"⚠️结尾kt，听写容易漏掉k"},
-    {w:"reward",phonetic:"[rɪˈwɔːd]",zh:"n. 回报",tip:"⚠️区分award（奖项）"},
-    {w:"willing",phonetic:"[ˈwɪlɪŋ]",zh:"adj. 愿意的",tip:"搭配 be willing to do"},
-    {w:"tolerant",phonetic:"[ˈtɒlərənt]",zh:"adj. 容忍的",tip:"形容词，对应名词tolerance"},
-    {w:"tolerance",phonetic:"[ˈtɒlərəns]",zh:"n. 容忍",tip:"名词，生物/社会话题"},
-    {w:"oyster",phonetic:"[ˈɔɪstə(r)]",zh:"n. 牡蛎",tip:"餐厅、海洋生物场景"},
-    {w:"expectation",phonetic:"[ˌekspekˈteɪʃn]",zh:"n. 期望（复数expectations）",tip:"教育心理，录音常考复数"},
-    {w:"expertise",phonetic:"[ˌekspɜːˈtiːz]",zh:"n. 专业技能",tip:"⚠️结尾ise，学术讲座高频名词"},
-    {w:"incident",phonetic:"[ˈɪnsɪdənt]",zh:"n. 事件（复数incidents）",tip:"历史事故，注意复数"},
-    {w:"promotion",phonetic:"[prəˈməʊʃn]",zh:"n. 提升，升迁",tip:"职场、广告场景"},
-    {w:"trust",phonetic:"[trʌst]",zh:"v./n. 信任",tip:"社会心理话题"},
-    {w:"leader",phonetic:"[ˈliːdə(r)]",zh:"n. 领导，领袖",tip:"组织历史讲座"},
-    {w:"shape",phonetic:"[ʃeɪp]",zh:"n. 形状 v. 塑造",tip:"可以做动词：塑造"},
-    {w:"democratic",phonetic:"[ˌdeməˈkrætɪk]",zh:"adj. 民主的",tip:"社会讲座长难拼写"},
+    {w:"structure",phonetic:"[ˈstrʌktʃə(r)]",zh:"n. 结构",tip:"S4讲座高频，建筑/生物话题；注意后缀-ture",page:40},
+    {w:"openness",phonetic:"[ˈəʊpənnəs]",zh:"n. 开放",tip:"⚠️双n，听写非常容易少写一个n",page:40},
+    {w:"reflective",phonetic:"[rɪˈflektɪv]",zh:"adj. 反思的，反射的，反映的",tip:"心理学、建筑话题",page:40},
+    {w:"rag",phonetic:"[ræɡ]",zh:"n. 破布（复数rags）",tip:"手工清洁场景，注意复数rags",page:40},
+    {w:"direction",phonetic:"[dəˈrekʃn]",zh:"n. 方向",tip:"方位、实验操作场景",page:40},
+    {w:"monument",phonetic:"[ˈmɒnjumənt]",zh:"n. 纪念碑",tip:"历史城市介绍，长单词注意拼写",page:40},
+    {w:"respect",phonetic:"[rɪˈspekt]",zh:"v./n. 尊敬，尊重",tip:"人文社会话题",page:40},
+    {w:"boiler",phonetic:"[ˈbɔɪlə(r)]",zh:"n. 锅炉",tip:"S1租房维修场景填空",page:40},
+    {w:"instinct",phonetic:"[ˈɪnstɪŋkt]",zh:"n. 本能",tip:"⚠️结尾kt，听写容易漏掉k",page:40},
+    {w:"reward",phonetic:"[rɪˈwɔːd]",zh:"n. 回报",tip:"⚠️区分award（奖项）",page:40},
+    {w:"willing",phonetic:"[ˈwɪlɪŋ]",zh:"adj. 愿意的",tip:"搭配 be willing to do",page:40},
+    {w:"tolerant",phonetic:"[ˈtɒlərənt]",zh:"adj. 容忍的",tip:"形容词，对应名词tolerance",page:40},
+    {w:"tolerance",phonetic:"[ˈtɒlərəns]",zh:"n. 容忍",tip:"名词，生物/社会话题",page:40},
+    {w:"oyster",phonetic:"[ˈɔɪstə(r)]",zh:"n. 牡蛎",tip:"餐厅、海洋生物场景",page:40},
+    {w:"expectation",phonetic:"[ˌekspekˈteɪʃn]",zh:"n. 期望（复数expectations）",tip:"教育心理，录音常考复数",page:40},
+    {w:"expertise",phonetic:"[ˌekspɜːˈtiːz]",zh:"n. 专业技能",tip:"⚠️结尾ise，学术讲座高频名词",page:40},
+    {w:"incident",phonetic:"[ˈɪnsɪdənt]",zh:"n. 事件（复数incidents）",tip:"历史事故，注意复数",page:40},
+    {w:"promotion",phonetic:"[prəˈməʊʃn]",zh:"n. 提升，升迁",tip:"职场、广告场景",page:40},
+    {w:"trust",phonetic:"[trʌst]",zh:"v./n. 信任",tip:"社会心理话题",page:40},
+    {w:"leader",phonetic:"[ˈliːdə(r)]",zh:"n. 领导，领袖",tip:"组织历史讲座",page:40},
+    {w:"shape",phonetic:"[ʃeɪp]",zh:"n. 形状 v. 塑造",tip:"可以做动词：塑造",page:40},
+    {w:"democratic",phonetic:"[ˌdeməˈkrætɪk]",zh:"adj. 民主的",tip:"社会讲座长难拼写",page:40},
 ];
 
 // ================= 音频播放（谷歌词典牛津真人美音，禁止TTS） =================
@@ -337,7 +337,6 @@ function updateStat(){
 // 全部完成后渲染对错清单
 function renderFinalList(){
     finalResultWrap.style.display = 'block';
-    btnExport.disabled = false;
     resultListBox.innerHTML = '';
     answerRecords.forEach(rec=>{
         const div = document.createElement('div');
@@ -352,29 +351,58 @@ function renderFinalList(){
     });
 }
 
-// 导出Excel（SheetJS）
+// 导出Excel（SheetJS）：随时可导出，未作答单词一并导出并标"未作答"
 function exportExcel(){
     const data = [
-        ["序号","标准答案单词","中文释义","是否正确","用户输入","考点提示"]
+        ["序号","标准答案","音标","中文释义","考点提示","你的答案","判分","🔊发音","页数"]
     ];
-    answerRecords.forEach((rec, idx)=>{
+    const audioLinks = []; // 记录每行发音超链接，行号与data对应
+    // 已作答记录（按作答顺序）
+    answerRecords.forEach(rec=>{
         data.push([
-            idx+1,
+            data.length,
             rec.word.w,
+            rec.word.phonetic,
             rec.word.zh,
-            rec.isOk ? "正确" : "错误",
+            rec.word.tip,
             rec.userInput || "(空)",
-            rec.word.tip
+            rec.isOk ? "✅正确" : "❌错误",
+            "▶ 播放",
+            rec.word.page
         ]);
+        audioLinks.push({row: data.length-1, url: audioUrl(rec.word.w.toLowerCase(),1)});
+    });
+    // 未作答单词（按词表顺序附后，判分标"未作答"）
+    const answeredSet = new Set(answerRecords.map(rec=>rec.word));
+    wordListRaw.forEach(item=>{
+        if(answeredSet.has(item)) return;
+        data.push([
+            data.length,
+            item.w,
+            item.phonetic,
+            item.zh,
+            item.tip,
+            "",
+            "未作答",
+            "▶ 播放",
+            item.page
+        ]);
+        audioLinks.push({row: data.length-1, url: audioUrl(item.w.toLowerCase(),1)});
     });
     // 汇总行
+    const unDone = wordListRaw.length - answerRecords.length;
     data.push([]);
-    data.push(["汇总",`总题:${shuffledList.length}`,`正确:${cntRight}`,`错误:${cntWrong}`,`正确率:${rateEl.innerText}`,""]);
+    data.push(["汇总",`总词:${wordListRaw.length}`,`已答:${answerRecords.length}`,`正确:${cntRight}`,`错误:${cntWrong}`,`未答:${unDone}`,`正确率:${rateEl.innerText}`,"",""]);
 
     const ws = XLSX.utils.aoa_to_sheet(data);
+    // 发音列写入mp3超链接，Excel/WPS中可点击播放
+    audioLinks.forEach(lk=>{
+        const ref = XLSX.utils.encode_cell({r: lk.row, c: 7});
+        if(ws[ref]) ws[ref].l = {Target: lk.url, Tooltip: "点击播放美音mp3"};
+    });
     // 设置列宽，WPS/Excel可直接打开
     ws['!cols'] = [
-        {wch:6},{wch:18},{wch:30},{wch:10},{wch:20},{wch:44}
+        {wch:6},{wch:16},{wch:22},{wch:28},{wch:44},{wch:18},{wch:12},{wch:10},{wch:8}
     ];
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "听写结果");
@@ -445,7 +473,6 @@ function initReset(){
     answerRecords = [];
     waitingNext = false;
     finalResultWrap.style.display = 'none';
-    btnExport.disabled = true;
     updateStat();
     renderDict();
 }
